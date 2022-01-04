@@ -6,6 +6,8 @@
 #include <iostream>
 
 #include <GLEW/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class Shader
 {
@@ -19,6 +21,7 @@ public:
 
     void SetUniform(std::string name, float value);
     void SetUniform(std::string name, int value);
+    void SetUniform(std::string name, glm::mat4* matrix);
 
 private:
     unsigned int shaderProgramId;

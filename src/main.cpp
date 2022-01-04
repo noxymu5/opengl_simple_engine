@@ -77,7 +77,7 @@ int main()
 
     shader.SetUniform("texture0", 0);
     shader.SetUniform("texture1", 1);
-
+    
     float lastTime = 0;
     float mixFactorSpeed = 0.2;
 
@@ -95,10 +95,14 @@ int main()
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        glm::mat4 trf = glm::mat4(1.0f);
+        trf = glm::rotate(trf, (float)currTime, glm::vec3(0.0, 0.0, 1.0));
 
         shader.Use();
         shader.SetUniform("mixFactor", currentMixFactor);
-        
+        shader.SetUniform("trf", &trf);
+
         texture0.Use();
         texture1.Use();
 
