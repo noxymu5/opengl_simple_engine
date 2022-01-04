@@ -8,7 +8,7 @@
             "label": "Build",
             "args": [
                 "-g",
-                "src\\main.cpp",
+                "src\\**.cpp",
                 "-o", "build\\engine",
                 "-Idependencies\\include",
                 "-Ldependencies\\lib",
