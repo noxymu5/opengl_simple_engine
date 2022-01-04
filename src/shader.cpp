@@ -81,3 +81,19 @@ unsigned int Shader::CreateAndCompileShader(GLenum shaderType, char* shaderCode)
 
     return shaderId;
 }
+
+void Shader::SetVertexAttribute(std::string name, GLint size, GLenum type, GLboolean isNormalized, GLsizei stride, unsigned int offset) {
+    int attributeLocation = glGetAttribLocation(shaderProgramId, name.c_str());
+    glVertexAttribPointer(attributeLocation, size, type, isNormalized, stride, (void*)offset);
+    glEnableVertexAttribArray(attributeLocation);
+}
+
+void Shader::SetUniform(std::string name, float value) {
+    int uniformLocation = glGetUniformLocation(shaderProgramId, name.c_str());
+    glUniform1f(uniformLocation, value);
+}
+
+void Shader::SetUniform(std::string name, int value) {
+    int uniformLocation = glGetUniformLocation(shaderProgramId, name.c_str());
+    glUniform1i(uniformLocation, value);
+}

@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "shader.h"
+#include "texture.h"
 
 void error_callback(int error, const char* description)
 {
@@ -30,20 +31,27 @@ int main()
     glewInit();
     glViewport(0, 0, 800, 600);
 
-    float vertices[] = {
-        // positions         // colors
-        0.5f, -0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,   // bottom left
-        0.0f,  0.5f, 0.0f,      0.0f, 0.0f, 1.0f    // top 
+    float verticesData[] = {
+        // positions          // colors           // texture coords
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
     };
     unsigned int indices[] = {
         0, 1, 2,   // first triangle
+        0, 2, 3,   // first triangle
     };
 
     //shaders preparation
     Shader shader("../shaders/simple_vertex_shader.vs", "../shaders/simple_fragment_shader.fs");
     //shaders preparation end
 
+    //texture preparation
+    Texture texture0("../assets/textures/container.jpg", GL_RGB);
+    Texture texture1("../assets/textures/kotik_yuy.jpg", GL_RGB, 1);
+    //texture preparation end
+    
     //vertex and index data preparation
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -57,25 +65,44 @@ int main()
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
 
-    int vertexPosLocation = glGetAttribLocation(shader.GetProgramId(), "aPos");
-    glVertexAttribPointer(vertexPosLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(vertexPosLocation);
-
-    int vertexColorLocation = glGetAttribLocation(shader.GetProgramId(), "aColor");
-    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(vertexColorLocation);
+    shader.SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+    shader.SetVertexAttribute("aColor", 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 3 * sizeof(float));
+    shader.SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 6 * sizeof(float));
 
     glBindVertexArray(0);
     //vertex and index data preparation end
 
+    shader.Use();
+
+    shader.SetUniform("texture0", 0);
+    shader.SetUniform("texture1", 1);
+
+    float lastTime = 0;
+    float mixFactorSpeed = 0.2;
+
+    float currentMixFactor = 0;
     while(!glfwWindowShouldClose(window))
     {
+        float currTime = glfwGetTime();
+        float deltaTime = currTime - lastTime;
+        lastTime = currTime;
+
+        currentMixFactor += mixFactorSpeed * deltaTime;
+        if (currentMixFactor > 1 || currentMixFactor < 0) {
+            mixFactorSpeed *= -1;
+        }
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.Use();
+        shader.SetUniform("mixFactor", currentMixFactor);
+        
+        texture0.Use();
+        texture1.Use();
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);

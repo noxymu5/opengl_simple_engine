@@ -15,6 +15,11 @@ public:
     unsigned int GetProgramId() const { return shaderProgramId; }
     void Use();
 
+    void SetVertexAttribute(std::string name, GLint size, GLenum type, GLboolean isNormalized, GLsizei stride, unsigned int offset);
+
+    void SetUniform(std::string name, float value);
+    void SetUniform(std::string name, int value);
+
 private:
     unsigned int shaderProgramId;
 
