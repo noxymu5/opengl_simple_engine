@@ -1,6 +1,6 @@
 #include "shader.h"
 
-Shader::Shader(std::string vertexShaderPath, std::string fragmentShaderPath) {
+Shader::Shader(std::string vertexShaderPath, std::string fragmentShaderPath, GLsizei inStride) : stride(inStride) {
     char* vertexShaderCode = LoadCodeFromFile(vertexShaderPath);
     char* fragmentShaderCode = LoadCodeFromFile(fragmentShaderPath);
 
@@ -82,7 +82,7 @@ unsigned int Shader::CreateAndCompileShader(GLenum shaderType, char* shaderCode)
     return shaderId;
 }
 
-void Shader::SetVertexAttribute(std::string name, GLint size, GLenum type, GLboolean isNormalized, GLsizei stride, unsigned int offset) {
+void Shader::SetVertexAttribute(std::string name, GLint size, GLenum type, GLboolean isNormalized, unsigned int offset) {
     int attributeLocation = glGetAttribLocation(shaderProgramId, name.c_str());
     glVertexAttribPointer(attributeLocation, size, type, isNormalized, stride, (void*)offset);
     glEnableVertexAttribArray(attributeLocation);

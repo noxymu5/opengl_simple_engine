@@ -32,11 +32,11 @@ int main()
     glViewport(0, 0, 800, 600);
 
     float verticesData[] = {
-        // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+        // positions            // texture coords
+        0.5f,  0.5f, 0.0f,      1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,      1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,     0.0f, 1.0f    // top left 
     };
     unsigned int indices[] = {
         0, 1, 2,   // first triangle
@@ -44,7 +44,7 @@ int main()
     };
 
     //shaders preparation
-    Shader shader("../shaders/simple_vertex_shader.vs", "../shaders/simple_fragment_shader.fs");
+    Shader shader("../shaders/simple_vertex_shader.vs", "../shaders/simple_fragment_shader.fs", 5 * sizeof(float));
     //shaders preparation end
 
     //texture preparation
@@ -67,9 +67,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
 
-    shader.SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
-    shader.SetVertexAttribute("aColor", 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 3 * sizeof(float));
-    shader.SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 6 * sizeof(float));
+    shader.SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 0);
+    shader.SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 
     glBindVertexArray(0);
     //vertex and index data preparation end

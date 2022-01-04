@@ -1,6 +1,5 @@
 #version 140
 
-in vec3 vertexColor;
 in vec2 texCoords;
 
 uniform sampler2D texture0;
