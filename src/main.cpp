@@ -5,6 +5,8 @@
 
 #include "shader.h"
 #include "texture.h"
+#include "buffers.h"
+#include "vertex_array_object.h"
 
 void error_callback(int error, const char* description)
 {
@@ -53,24 +55,15 @@ int main()
     //texture preparation end
     
     //vertex and index data preparation
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO); 
+    VertexArrayObject vao;
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
-
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
+    VertexBuffer vBuffer(verticesData, sizeof(verticesData));
+    IndexBuffer iBuffer(indices, sizeof(indices));
 
     shader.SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 0);
     shader.SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 
-    glBindVertexArray(0);
+    vao.UnBind();
     //vertex and index data preparation end
 
     shader.Use();
@@ -103,12 +96,12 @@ int main()
         shader.SetUniform("mixFactor", currentMixFactor);
         shader.SetUniform("trf", &trf);
 
-        texture0.Use();
-        texture1.Use();
+        texture0.Bind();
+        texture1.Bind();
 
-        glBindVertexArray(VAO);
+        vao.Bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        vao.UnBind();
 
         glfwPollEvents();
         glfwSwapBuffers(window);

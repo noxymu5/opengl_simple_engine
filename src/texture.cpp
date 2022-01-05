@@ -23,7 +23,7 @@ Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextur
     stbi_image_free(textureData);
 }
 
-void Texture::Use() {
+void Texture::Bind() {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, id);
 }

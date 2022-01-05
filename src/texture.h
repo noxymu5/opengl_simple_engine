@@ -11,7 +11,7 @@ class Texture
 {
 public:
     Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit = 0);
-    void Use();
+    void Bind();
 
 private:
     unsigned int id = -1;
