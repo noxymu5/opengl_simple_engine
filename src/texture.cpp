@@ -12,6 +12,7 @@ Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextur
 
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

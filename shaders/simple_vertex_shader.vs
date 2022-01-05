@@ -3,7 +3,6 @@
 in vec3 aPos;
 in vec2 aTexCoords; 
 
-out vec3 vertexColor;
 out vec2 texCoords;
 
 uniform mat4 trf;
