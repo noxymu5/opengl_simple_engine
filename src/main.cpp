@@ -10,9 +10,26 @@
 #include "buffers.h"
 #include "vertex_array_object.h"
 #include "camera.h"
+#include "transform.h"
 
 void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
+}
+
+Transform CreateRandomizedTransform(std::default_random_engine eng, std::uniform_real_distribution<> distr, bool fixedY = false) {
+    float rndX = distr(eng) - M_PI;
+    float rndY = distr(eng) - M_PI;
+    float rndZ = distr(eng) - M_PI;
+
+    float rndRot = distr(eng);
+    float rndScale = distr(eng) / (4 * M_PI);
+
+    Transform res;
+    res.Scale(glm::vec3(1.0) * rndScale);
+    res.Translate(glm::vec3(rndX, (fixedY ? 5 : rndY), rndZ));
+    res.Rotate((float)rndRot, glm::vec3(0.1, 0.5, 1));
+
+    return res;
 }
 
 int main()
@@ -126,19 +143,10 @@ int main()
     std::default_random_engine eng(rd());
     std::uniform_real_distribution<> distr(0, 4 * M_PI);
 
-    glm::mat4 cubeTransforms[36];
+    Transform cubeTransforms[36];
     for (int i = 0; i < 36; ++i) {
-        float rndX = distr(eng) - M_PI;
-        float rndY = distr(eng) - M_PI;
-        float rndZ = distr(eng) * -1 - 1;
-
-        float rndRot = distr(eng);
-        float rndScale = distr(eng) / (4 * M_PI);
-
-        cubeTransforms[i] = glm::mat4(1.0f);
-        cubeTransforms[i] = glm::scale(cubeTransforms[i], glm::vec3(1.0) * rndScale);
-        cubeTransforms[i] = glm::translate(glm::mat4(1.0f), glm::vec3(rndX, rndY, rndZ)) * cubeTransforms[i];
-        cubeTransforms[i] = cubeTransforms[i] * glm::rotate(glm::mat4(1.0f), (float)rndRot, glm::vec3(0.1, 0.5, 1));
+        distr(eng);
+        cubeTransforms[i] = CreateRandomizedTransform(eng, distr);
     }
 
     float lastTime = 0;
@@ -170,15 +178,17 @@ int main()
 
         vao.Bind();
         for (int i = 0; i < 36; ++i) {
-            cubeTransforms[i] = cubeTransforms[i] * glm::rotate(glm::mat4(1.0f), deltaTime, glm::vec3(0.1, 0.5, 1));
-            cubeTransforms[i] = glm::translate(glm::mat4(1.0f), glm::vec3(0, -1, 0) * deltaTime * moveDownSpeed) * cubeTransforms[i];
+            cubeTransforms[i].Rotate(deltaTime, glm::vec3(0.1, 0.5, 1));
+            cubeTransforms[i].Translate(glm::vec3(0, -1, 0) * deltaTime * moveDownSpeed);
 
-            glm::mat4 mvpMatr = proj * camera.GetCameraMatr() * cubeTransforms[i];
+            glm::mat4 mvpMatr = proj * camera.GetCameraMatr() * cubeTransforms[i].Get();
             shader.SetUniform("trf", &mvpMatr);
             glDrawArrays(GL_TRIANGLES, 0, 36);
 
-            if (cubeTransforms[i][3][1] < -5) {
-                cubeTransforms[i][3][1] = 5;
+            glm::vec3 currPos = cubeTransforms[i].GetPosition();
+            if (currPos[1] < -5) {
+                distr(eng);
+                cubeTransforms[i] = CreateRandomizedTransform(eng, distr, true);
             }
         }
         vao.UnBind();
