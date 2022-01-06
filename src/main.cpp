@@ -9,9 +9,9 @@
 #include "texture.h"
 #include "buffers.h"
 #include "vertex_array_object.h"
+#include "camera.h"
 
-void error_callback(int error, const char* description)
-{
+void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
 }
 
@@ -28,17 +28,20 @@ int main()
     glfwSetErrorCallback(error_callback);
 
     GLFWwindow* window = glfwCreateWindow(width, height, "Test window", NULL, NULL);
-    if (window == NULL)
-    {
+    if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+
     glfwMakeContextCurrent(window);
     glewInit();
 
     glViewport(0, 0, width, height);
-    glEnable(GL_DEPTH_TEST); 
+    glEnable(GL_DEPTH_TEST);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    Camera camera(window, width / 2, height / 2);
     
     float verticesData[] = {
         // positions            // texture coords
@@ -124,8 +127,7 @@ int main()
     std::uniform_real_distribution<> distr(0, 4 * M_PI);
 
     glm::mat4 cubeTransforms[36];
-    for (int i = 0; i < 36; ++i)
-    {
+    for (int i = 0; i < 36; ++i) {
         float rndX = distr(eng) - M_PI;
         float rndY = distr(eng) - M_PI;
         float rndZ = distr(eng) * -1 - 1;
@@ -145,12 +147,13 @@ int main()
     
     float moveDownSpeed = 1;
 
-    while(!glfwWindowShouldClose(window))
-    {
+    while(!glfwWindowShouldClose(window)) {
         float currTime = glfwGetTime();
         float deltaTime = currTime - lastTime;
         lastTime = currTime;
 
+        camera.UpdateCamera(deltaTime);
+        
         currentMixFactor += mixFactorSpeed * deltaTime;
         if (currentMixFactor > 1 || currentMixFactor < 0) {
             mixFactorSpeed *= -1;
@@ -160,19 +163,18 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.Use();
+        shader.SetUniform("mixFactor", currentMixFactor);
 
         texture0.Bind();
         texture1.Bind();
 
         vao.Bind();
-        for (int i = 0; i < 36; ++i)
-        {
+        for (int i = 0; i < 36; ++i) {
             cubeTransforms[i] = cubeTransforms[i] * glm::rotate(glm::mat4(1.0f), deltaTime, glm::vec3(0.1, 0.5, 1));
             cubeTransforms[i] = glm::translate(glm::mat4(1.0f), glm::vec3(0, -1, 0) * deltaTime * moveDownSpeed) * cubeTransforms[i];
 
-            glm::mat4 mvpMatr = proj * view * cubeTransforms[i];
+            glm::mat4 mvpMatr = proj * camera.GetCameraMatr() * cubeTransforms[i];
             shader.SetUniform("trf", &mvpMatr);
-            shader.SetUniform("mixFactor", currentMixFactor);
             glDrawArrays(GL_TRIANGLES, 0, 36);
 
             if (cubeTransforms[i][3][1] < -5) {
