@@ -22,7 +22,7 @@ void VertexBuffer::UnBind() const {
 
 //Index buffer
 
-IndexBuffer::IndexBuffer(unsigned int* indices, unsigned int size) {
+IndexBuffer::IndexBuffer(const unsigned int* indices, unsigned int size) {
     count = size / sizeof(unsigned int);
 
     glGenBuffers(1, &id);

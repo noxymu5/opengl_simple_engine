@@ -27,7 +27,7 @@ void ApplicationCubeFall::Init() {
     
     vao = new VertexArrayObject();
     vao->Bind();
-        vBuffer = new VertexBuffer(cubeVertexData, sizeof(cubeVertexData));
+        vBuffer = new VertexBuffer(HELPERS::cubeVertexData, sizeof(HELPERS::cubeVertexData));
 
         shader->SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 0);
         shader->SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));

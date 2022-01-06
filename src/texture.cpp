@@ -1,7 +1,7 @@
 #include "texture.h"
 
 Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
-    stbi_set_flip_vertically_on_load(true);
+    // stbi_set_flip_vertically_on_load(true);
 
     int width, height, nrChannels;
     unsigned char *textureData = stbi_load(pathToTexture.c_str(), &width, &height, &nrChannels, 0);
@@ -12,7 +12,7 @@ Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextur
 
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    // glGenerateMipmap(GL_TEXTURE_2D);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

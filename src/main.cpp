@@ -11,6 +11,7 @@ void error_callback(int error, const char* description) {
 
 int main()
 {
+    stbi_set_flip_vertically_on_load(true);
     const float width = 800;
     const float height = 600;
 
@@ -42,7 +43,21 @@ int main()
     ApplicationBase* app = new ApplicationCubeFall(window, width, height);
     //Create application end
 
-    app->Init();
+    Texture texture("../assets/textures/test_tex.png", GL_RGBA);
+    Shader shader("../shaders/simple_vertex_shader.vs", "../shaders/simple_fragment_shader.fs", 5 * sizeof(float));
+
+    VertexArrayObject vao;
+    vao.Bind();
+        VertexBuffer vbo(HELPERS::planeVertexData, sizeof(HELPERS::planeVertexData));
+        IndexBuffer ebo(HELPERS::planeIndexData, sizeof(HELPERS::planeIndexData));
+
+        shader.SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 0);
+        shader.SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+    vao.UnBind();
+
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), width/height, 0.1f, 100.0f);
+
+    // app->Init();
     float lastTime = 0;
     while(!glfwWindowShouldClose(window)) {
         float currTime = glfwGetTime();
@@ -54,7 +69,15 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        app->ExecuteLoop(deltaTime);
+        shader.Use();
+        vao.Bind();
+            glm::mat4 mvp = proj * camera->GetCameraMatr() * glm::mat4(1.0f);
+            shader.SetUniform("trf", &mvp);
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        vao.UnBind();
+
+        // app->ExecuteLoop(deltaTime);
 
         glfwPollEvents();
         glfwSwapBuffers(window);

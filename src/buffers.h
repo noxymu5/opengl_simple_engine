@@ -9,7 +9,6 @@ private:
     unsigned int id;
 
 public:
-    VertexBuffer();
     VertexBuffer(const float* verticesData, const unsigned int size);
     ~VertexBuffer();
 
@@ -24,7 +23,7 @@ private:
     unsigned int count;
 
 public:
-    IndexBuffer(unsigned int* indices, unsigned int size);
+    IndexBuffer(const unsigned int* indices, unsigned int size);
     ~IndexBuffer();
 
     void Bind() const;
