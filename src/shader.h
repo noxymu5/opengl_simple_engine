@@ -1,17 +1,12 @@
 #ifndef SHADER
 #define SHADER
 
-#include <string>
-#include <fstream>
-#include <iostream>
-
-#include <GLEW/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "common.h"
 
 class Shader
 {
 public:
+    Shader();
     Shader(std::string vertexShaderPath, std::string fragmentShaderPath, GLsizei inStride);
 
     unsigned int GetProgramId() const { return shaderProgramId; }

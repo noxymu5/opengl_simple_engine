@@ -1,9 +1,20 @@
 #include "camera.h"
 
-Camera::Camera(GLFWwindow *inWindow, float initialMouseX, float initialMouseY) 
-    : window(inWindow), lastMouseX(initialMouseX), lastMouseY(initialMouseY) {
-    
-    position = glm::vec3(0.0);
+Camera::Camera() {}
+
+Camera* Camera::GetCamera() {
+    if (instance) {
+        return instance;
+    }
+
+    instance = new Camera();
+    return instance;
+}
+
+void Camera::Init(GLFWwindow *inWindow, float initialMouseX, float initialMouseY) {
+    window = inWindow;
+    lastMouseX = initialMouseX;
+    lastMouseY = initialMouseY;
 }
 
 Camera::~Camera() {

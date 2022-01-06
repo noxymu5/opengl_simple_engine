@@ -1,7 +1,7 @@
 #ifndef BUFFERS
 #define BUFFERS
 
-#include <GLEW/glew.h>
+#include "common.h"
 
 class VertexBuffer
 {
@@ -9,7 +9,8 @@ private:
     unsigned int id;
 
 public:
-    VertexBuffer(float* verticesData, unsigned int size);
+    VertexBuffer();
+    VertexBuffer(const float* verticesData, const unsigned int size);
     ~VertexBuffer();
 
     void Bind() const;

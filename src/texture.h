@@ -1,15 +1,14 @@
 #ifndef TEXTURE
 #define TEXTURE
 
-#include <string>
-#include <iostream>
+#include "common.h"
 
-#include <GLEW/glew.h>
 #include "stb_image.h"
 
 class Texture
 {
 public:
+    Texture();
     Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit = 0);
     void Bind();
 

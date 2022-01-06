@@ -1,9 +1,7 @@
 #ifndef CAMERA
 #define CAMERA
 
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/ext/matrix_transform.hpp>
+#include "common.h"
 
 class Camera
 {
@@ -13,6 +11,8 @@ private:
     const float movementSpeed = 5;
     const float mouseSensitivity = 0.1;
 
+    Camera();
+
     GLFWwindow* window;
 
     float lastMouseX;
@@ -21,7 +21,7 @@ private:
     float yaw;
     float pitch;
 
-    glm::vec3 position;
+    glm::vec3 position = glm::vec3(0.0);
     glm::vec3 up;
     glm::vec3 right;
 
@@ -32,11 +32,15 @@ private:
     bool IsKeyPressed(int key);
 
 public:
-    Camera(GLFWwindow *inWindow, float initialMouseX, float initialMouseY);
+    static Camera* GetCamera();
+    void Init(GLFWwindow *inWindow, float initialMouseX, float initialMouseY);
     ~Camera();
 
     glm::mat4 GetCameraMatr();
     void UpdateCamera(float dt);
 };
+
+static Camera* instance;
+
 
 #endif
