@@ -10,11 +10,11 @@
                 "-g",
                 "src\\**.cpp",
                 "-o", "build\\engine",
-                "-Idependencies\\include",
                 "-Ldependencies\\lib",
                 "-lopengl32",
                 "-lglfw3",
-                "-lglew32"
+                "-lglew32",
+                "-Idependencies\\include"
             ]
         }
     ]
