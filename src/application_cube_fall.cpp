@@ -20,22 +20,14 @@ Transform ApplicationCubeFall::CreateRandomizedTransform(bool fixedY) {
 void ApplicationCubeFall::Init() {
     proj = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
 
-    shader = new Shader("../shaders/simple_vertex_shader.vs", "../shaders/simple_fragment_shader.fs", 5 * sizeof(float));
-
-    texture0 = new Texture("../assets/textures/container.jpg", GL_RGB);
-    texture1 = new Texture("../assets/textures/kotik_yuy.jpg", GL_RGB, 1);
+    texture = new Texture("../assets/textures/container.jpg", GL_RGB);
+    shader = new Shader("../shaders/simple_shader.glsl");
     
     vao = new VertexArrayObject();
     vao->Bind();
         vBuffer = new VertexBuffer(HELPERS::cubeVertexData, sizeof(HELPERS::cubeVertexData));
-
-        shader->SetVertexAttribute("aPos", 3, GL_FLOAT, GL_FALSE, 0);
-        shader->SetVertexAttribute("aTexCoords", 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+        shader->BindVertexAttributes();
     vao->UnBind();
-
-    shader->Use();
-    shader->SetUniform("texture0", 0);
-    shader->SetUniform("texture1", 1);
 
     for (int i = 0; i < 36; ++i) {
         cubeTransforms[i] = CreateRandomizedTransform();
@@ -49,11 +41,6 @@ void ApplicationCubeFall::ExecuteLoop(float dt) {
     }
 
     shader->Use();
-    shader->SetUniform("mixFactor", currentMixFactor);
-
-    texture0->Bind();
-    texture1->Bind();
-
     vao->Bind();
         for (int i = 0; i < 36; ++i) {
             cubeTransforms[i].Rotate(dt, glm::vec3(0.1, 0.5, 1));

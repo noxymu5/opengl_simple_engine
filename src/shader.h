@@ -2,17 +2,30 @@
 #define SHADER
 
 #include "common.h"
+#include <vector>
 
-class Shader
-{
+enum class ShaderType {
+    Udefined = -1,
+    Vertex,
+    Fragment,
+
+    Count
+};
+
+struct VertexBufferLayoutTypeInfo {
+    GLenum type;
+    unsigned int count;
+    GLsizei size;
+};
+
+class Shader {
 public:
-    Shader();
-    Shader(std::string vertexShaderPath, std::string fragmentShaderPath, GLsizei inStride);
+    Shader(const std::string &path);
 
     unsigned int GetProgramId() const { return shaderProgramId; }
     void Use();
 
-    void SetVertexAttribute(std::string name, GLint size, GLenum type, GLboolean isNormalized, unsigned int offset);
+    void BindVertexAttributes();
 
     void SetUniform(std::string name, float value);
     void SetUniform(std::string name, int value);
@@ -20,10 +33,17 @@ public:
 
 private:
     unsigned int shaderProgramId;
-    GLsizei stride;
 
-    char* LoadCodeFromFile(std::string FilePath);
-    unsigned int CreateAndCompileShader(GLenum shaderType, char* shaderCode);
+    std::vector<VertexBufferLayoutTypeInfo> typesLayout;
+    GLsizei stride = 0;
+
+    std::string* ParseShaderSources(const std::string& filePath);
+    std::string LoadCodeFromFile(std::string FilePath);
+
+    void PushLayout(VertexBufferLayoutTypeInfo info);
+
+    void CompileShaderProgram(std::string* shaderSources);
+    unsigned int CreateAndCompileShader(ShaderType shaderType, const char* shaderCode);
 };
 
 #endif

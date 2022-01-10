@@ -31,8 +31,7 @@ private:
     VertexBuffer* vBuffer;
 
     Shader* shader;
-    Texture* texture0;
-    Texture* texture1;
+    Texture* texture;
 
     float mixFactorSpeed = 1;
     float currentMixFactor = 0;
