@@ -27,10 +27,14 @@ private:
 
     glm::mat4 proj;
 
-    VertexArrayObject* vao;
-    VertexBuffer* vBuffer;
+    VertexArrayObject* vaoCube;
+    VertexBuffer* vBufferCube;
 
-    Shader* shader;
+    VertexArrayObject* vaoLightSource;
+    VertexBuffer* vBufferLightSource;
+
+    Shader* cubeShader;
+    Shader* lightSourceShader;
     Texture* texture;
 
     float mixFactorSpeed = 1;
@@ -38,6 +42,10 @@ private:
     float moveDownSpeed = 1;
 
     Transform cubeTransforms[36];
+
+    Transform lightSourceTrf;
+
+    glm::vec3 lightColor = glm::vec3(1.0f);
 };
 
 

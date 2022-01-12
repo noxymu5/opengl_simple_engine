@@ -29,7 +29,8 @@ public:
 
     void SetUniform(std::string name, float value);
     void SetUniform(std::string name, int value);
-    void SetUniform(std::string name, glm::mat4* matrix);
+    void SetUniform(std::string name, const glm::mat4& matrix);
+    void SetUniform(std::string name, const glm::vec3& vector);
 
 private:
     unsigned int shaderProgramId;

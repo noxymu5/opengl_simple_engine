@@ -1,17 +1,19 @@
 #include "application_cube_fall.h"
 
+const float PI = glm::pi<float>();
+
 Transform ApplicationCubeFall::CreateRandomizedTransform(bool fixedY) {
 
-    float rndX = glm::linearRand(-M_PI, M_PI);
-    float rndY = glm::linearRand(-M_PI * 2, M_PI * 2);
-    float rndZ = glm::linearRand(-M_PI, M_PI);
+    float rndX = glm::linearRand(-PI, PI);
+    float rndY = glm::linearRand(-PI * 2, PI * 2);
+    float rndZ = glm::linearRand(-PI, PI);
 
-    float rndRot = glm::linearRand(0.0, 2.0 * M_PI);
-    float rndScale = glm::linearRand(0.0, M_PI) / M_PI;
+    float rndRot = glm::linearRand(0.0, 2.0 * PI);
+    float rndScale = glm::linearRand(0.2, 1.0);
 
     Transform res;
     res.Scale(glm::vec3(1.0) * rndScale);
-    res.Translate(glm::vec3(rndX, (fixedY ? 5 : rndY), rndZ));
+    res.Translate(glm::vec3(rndX, (fixedY ? 7 : rndY), rndZ));
     res.Rotate((float)rndRot, glm::vec3(0.1, 0.5, 1));
 
     return res;
@@ -21,17 +23,26 @@ void ApplicationCubeFall::Init() {
     proj = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
 
     texture = new Texture("../assets/textures/container.jpg", GL_RGB);
-    shader = new Shader("../shaders/simple_shader.glsl");
+    cubeShader = new Shader("../shaders/simple_lit_shader.glsl");
+    lightSourceShader = new Shader("../shaders/light_source.glsl");
     
-    vao = new VertexArrayObject();
-    vao->Bind();
-        vBuffer = new VertexBuffer(HELPERS::cubeVertexData, sizeof(HELPERS::cubeVertexData));
-        shader->BindVertexAttributes();
-    vao->UnBind();
+    vaoCube = new VertexArrayObject();
+    vaoCube->Bind();
+        vBufferCube = new VertexBuffer(HELPERS::cubeVertexDataUvNormals, sizeof(HELPERS::cubeVertexDataUvNormals));
+        cubeShader->BindVertexAttributes();
+    vaoCube->UnBind();
+    
+    vaoLightSource = new VertexArrayObject();
+    vaoLightSource->Bind();
+        vBufferLightSource = new VertexBuffer(HELPERS::cubeVertexData, sizeof(HELPERS::cubeVertexData));
+        lightSourceShader->BindVertexAttributes();
+    vaoLightSource->UnBind();
 
     for (int i = 0; i < 36; ++i) {
         cubeTransforms[i] = CreateRandomizedTransform();
     }
+
+    lightSourceTrf.Scale(glm::vec3(0.3f));
 }
 
 void ApplicationCubeFall::ExecuteLoop(float dt) {
@@ -39,21 +50,32 @@ void ApplicationCubeFall::ExecuteLoop(float dt) {
     if (currentMixFactor > 1 || currentMixFactor < 0) {
         mixFactorSpeed *= -1;
     }
+    glm::mat4 viewProj = proj * camera->GetCameraMatr();
 
-    shader->Use();
-    vao->Bind();
-        for (int i = 0; i < 36; ++i) {
+    vaoLightSource->Bind();
+        lightSourceShader->Use();
+        lightSourceShader->SetUniform("trf", viewProj * lightSourceTrf.Get());        
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    vaoLightSource->UnBind();
+
+    vaoCube->Bind();
+        cubeShader->Use();
+        for(int i = 0; i < 36; ++i) {
             cubeTransforms[i].Rotate(dt, glm::vec3(0.1, 0.5, 1));
             cubeTransforms[i].Translate(glm::vec3(0, -1, 0) * dt * moveDownSpeed);
 
-            glm::mat4 mvpMatr = proj * camera->GetCameraMatr() * cubeTransforms[i].Get();
-            shader->SetUniform("trf", &mvpMatr);
+            cubeShader->SetUniform("viewProj", viewProj);
+            cubeShader->SetUniform("model", cubeTransforms[i].Get());
+            cubeShader->SetUniform("ulightColor", lightColor);
+            cubeShader->SetUniform("ulightPos", lightSourceTrf.Get()[3]);
+            cubeShader->SetUniform("uViewPos", camera->GetCameraMatr()[3]);
+            
             glDrawArrays(GL_TRIANGLES, 0, 36);
 
             glm::vec3 currPos = cubeTransforms[i].GetPosition();
-            if (currPos[1] < -5) {
+            if (currPos[1] < -7) {
                 cubeTransforms[i] = CreateRandomizedTransform(true);
             }
         }
-    vao->UnBind();
+    vaoCube->UnBind();
 }
