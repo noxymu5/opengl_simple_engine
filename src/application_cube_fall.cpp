@@ -1,5 +1,7 @@
 #include "application_cube_fall.h"
 
+#include "helpers.h"
+
 const float PI = glm::pi<float>();
 
 Transform ApplicationCubeFall::CreateRandomizedTransform(bool fixedY) {
@@ -22,9 +24,9 @@ Transform ApplicationCubeFall::CreateRandomizedTransform(bool fixedY) {
 void ApplicationCubeFall::Init() {
     proj = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
 
-    texture = new Texture("../assets/textures/container.jpg", GL_RGB);
-    cubeShader = new Shader("../shaders/simple_lit_shader.glsl");
-    lightSourceShader = new Shader("../shaders/light_source.glsl");
+    texture = new Texture(HELPERS::AssetPath("textures/container.jpg"), GL_RGB);
+    cubeShader = new Shader(HELPERS::ShaderPath("simple_lit_shader.glsl"));
+    lightSourceShader = new Shader(HELPERS::ShaderPath("light_source.glsl"));
     
     vaoCube = new VertexArrayObject();
     vaoCube->Bind();

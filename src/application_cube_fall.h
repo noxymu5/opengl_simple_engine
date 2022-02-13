@@ -5,8 +5,6 @@
 
 #include "application_base.h"
 
-#include "helpers.h"
-
 #include "shader.h"
 #include "texture.h"
 #include "buffers.h"
