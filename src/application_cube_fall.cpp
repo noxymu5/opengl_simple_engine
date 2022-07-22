@@ -47,6 +47,12 @@ void ApplicationCubeFall::Init() {
     lightSourceTrf.Scale(glm::vec3(0.3f));
 }
 
+void ApplicationCubeFall::UpdateScreenSize(int newWidth, int newHeight) {
+    ApplicationBase::UpdateScreenSize(newWidth, newHeight);
+
+    proj = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
+}
+
 void ApplicationCubeFall::ExecuteLoop(float dt) {
     currentMixFactor += mixFactorSpeed * dt;
     if (currentMixFactor > 1 || currentMixFactor < 0) {

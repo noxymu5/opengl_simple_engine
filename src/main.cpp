@@ -5,15 +5,26 @@
 
 #include "application_cube_fall.h"
 
+int width = 1280;
+int height = 720;
+
+ApplicationBase* app;
+
 void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
+}
+
+void windowSizeCallback(GLFWwindow* window, int windowWidth, int windowHeight) {
+    glViewport(0, 0, windowWidth, windowHeight);
+    width = windowWidth;
+    height = windowHeight;
+
+    app->UpdateScreenSize(width, height);
 }
 
 int main()
 {
     stbi_set_flip_vertically_on_load(true);
-    const float width = 800;
-    const float height = 600;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -32,6 +43,8 @@ int main()
     glfwMakeContextCurrent(window);
     glewInit();
 
+    glfwSetWindowSizeCallback(window, windowSizeCallback);
+
     glViewport(0, 0, width, height);
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -39,22 +52,7 @@ int main()
     Camera* camera = Camera::GetCamera();
     camera->Init(window, width / 2, height / 2);
 
-    //Create application
-    ApplicationBase* app = new ApplicationCubeFall(window, width, height);
-    //Create application end
-
-    // Texture texture("../assets/textures/test_tex.png", GL_RGBA);
-    // Shader shader("../shaders/simple_shader.glsl");
-
-    // VertexArrayObject vao;
-    // vao.Bind();
-    //     VertexBuffer vbo(HELPERS::planeVertexData, sizeof(HELPERS::planeVertexData));
-    //     IndexBuffer ebo(HELPERS::planeIndexData, sizeof(HELPERS::planeIndexData));
-
-    //     shader.BindVertexAttributes();
-    // vao.UnBind();
-
-    // glm::mat4 proj = glm::perspective(glm::radians(45.0f), width/height, 0.1f, 100.0f);
+    app = new ApplicationCubeFall(window, width, height);
 
     app->Init();
     float lastTime = 0;
@@ -65,22 +63,14 @@ int main()
 
         camera->UpdateCamera(deltaTime);
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // shader.Use();
-        // vao.Bind();
-        //     glm::mat4 mvp = proj * camera->GetCameraMatr() * glm::mat4(1.0f);
-        //     shader.SetUniform("trf", &mvp);
-
-        //     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        // vao.UnBind();
 
         app->ExecuteLoop(deltaTime);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
-    } 
+    }
 
     glfwTerminate();
     return 0;

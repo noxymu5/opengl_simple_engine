@@ -11,6 +11,7 @@ public:
         : window(inWindow), windowWidth(width), windowHeight(height) { camera = Camera::GetCamera(); }
 
     virtual void Init() = 0;
+    virtual void UpdateScreenSize(int newWidth, int newHeight);
     virtual void ExecuteLoop(float dt) = 0;
 
 protected:

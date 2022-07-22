@@ -18,6 +18,7 @@ public:
         : ApplicationBase(inWindow, width, height) {}
 
     virtual void Init() override;
+    virtual void UpdateScreenSize(int newWidth, int newHeight) override;
     virtual void ExecuteLoop(float dt) override;
 
 private:
