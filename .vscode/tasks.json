@@ -9,12 +9,19 @@
             "args": [
                 "-g",
                 "src\\**.cpp",
-                "-o", "build\\engine",
+                "src\\application\\**.cpp",
+                "src\\core\\**.h",
+                "src\\input\\**.cpp",
+                "src\\math\\**.cpp",
+                "src\\render\\**.cpp",
+                "src\\scene\\**.cpp",
                 "-Ldependencies\\lib",
+                "-Isrc",
                 "-lopengl32",
                 "-lglfw3",
                 "-lglew32",
-                "-Idependencies\\include"
+                "-Idependencies\\include",
+                "-o", "build\\engine"
             ]
         }
     ]

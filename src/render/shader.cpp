@@ -5,6 +5,8 @@
 #include <iterator>
 #include <sstream>
 
+#include "core/asserts.h"
+
 static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToLayoutMap = {
     {"vec2", {GL_FLOAT, 2, sizeof(float) * 2}},
     {"vec3", {GL_FLOAT, 3, sizeof(float) * 3}}
@@ -82,10 +84,7 @@ std::string Shader::LoadCodeFromFile(std::string filePath) {
 
 std::string* Shader::ParseShaderSources(const std::string& filePath) {
     std::ifstream shaderFile(filePath);
-    if (!shaderFile) {
-        std::cout << "Can not open file by path " << filePath.c_str() << "\n";
-        return nullptr;
-    }
+    ASSERT(shaderFile, "Can not open shader file")
 
     ShaderType type;
     std::string line;

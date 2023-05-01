@@ -1,7 +1,7 @@
 #ifndef VERTEX_ARRAY_OBJECT
 #define VERTEX_ARRAY_OBJECT
 
-#include "common.h"
+#include "core/common.h"
 
 class VertexArrayObject
 {

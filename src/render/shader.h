@@ -1,7 +1,7 @@
 #ifndef SHADER
 #define SHADER
 
-#include "common.h"
+#include "core/common.h"
 #include <vector>
 
 enum class ShaderType {

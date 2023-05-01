@@ -1,7 +1,7 @@
 #ifndef BUFFERS
 #define BUFFERS
 
-#include "common.h"
+#include "core/common.h"
 
 class VertexBuffer
 {

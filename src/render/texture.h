@@ -1,9 +1,7 @@
 #ifndef TEXTURE
 #define TEXTURE
 
-#include "common.h"
-
-#include "stb_image.h"
+#include "core/common.h"
 
 class Texture
 {

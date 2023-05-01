@@ -63,6 +63,10 @@
         "xmemory": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "bit": "cpp",
+        "compare": "cpp",
+        "map": "cpp",
+        "xtree": "cpp"
     }
 }

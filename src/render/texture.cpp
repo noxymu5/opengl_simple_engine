@@ -1,5 +1,7 @@
 #include "texture.h"
 
+#include "stb_image.h"
+
 Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
     int width, height, nrChannels;
     unsigned char *textureData = stbi_load(pathToTexture.c_str(), &width, &height, &nrChannels, 0);
