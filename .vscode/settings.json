@@ -67,6 +67,11 @@
         "bit": "cpp",
         "compare": "cpp",
         "map": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "codecvt": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "numbers": "cpp"
     }
 }

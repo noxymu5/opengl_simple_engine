@@ -1,11 +1,11 @@
 #include "core/logging.h"
 
-#define ASSERT(condition, message) \
+#define ASSERT(condition, message, ...) \
 { \
     if (!(condition)) { \
-        LOG("%s", message); \
+        LOG(message, ##__VA_ARGS__); \
         __builtin_trap(); \
     } \
 }
 
-#define ASSERT_FAIL(message) ASSERT(false, message)
+#define ASSERT_FAIL(message, ...) ASSERT(false, message, ##__VA_ARGS__)

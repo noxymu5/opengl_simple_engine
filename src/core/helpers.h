@@ -1,16 +1,7 @@
 #include <string>
 
 namespace HELPERS {
-
-    static std::string AssetPath(std::string path) {
-        return std::string("../assets/") + path;
-    }
-
-    static std::string ShaderPath(std::string path) {
-        return std::string("../shaders/") + path;
-    }
-
-
+    
     const float cubeVertexData[] = {
         -0.5f, -0.5f, -0.5f,
         0.5f, -0.5f, -0.5f, 

@@ -1,21 +1,18 @@
 #ifndef SHADER
 #define SHADER
 
-#include "core/common.h"
 #include <vector>
+#include <string>
 
-enum class ShaderType {
-    Udefined = -1,
-    Vertex,
-    Fragment,
+#include "core/glm_declarations.h"
 
-    Count
-};
+class ResourceShader;
+enum class ShaderType;
 
 struct VertexBufferLayoutTypeInfo {
-    GLenum type;
+    unsigned int type;
     unsigned int count;
-    GLsizei size;
+    unsigned int size;
 };
 
 class Shader {
@@ -36,10 +33,9 @@ private:
     unsigned int shaderProgramId;
 
     std::vector<VertexBufferLayoutTypeInfo> typesLayout;
-    GLsizei stride = 0;
+    unsigned int stride = 0;
 
-    std::string* ParseShaderSources(const std::string& filePath);
-    std::string LoadCodeFromFile(std::string FilePath);
+    void CreateAttributreLayout(ResourceShader resource);
 
     void PushLayout(VertexBufferLayoutTypeInfo info);
 

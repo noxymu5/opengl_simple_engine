@@ -1,7 +1,5 @@
 #include "scene.h"
 
-#include "core/common.h"
-
 #include "scene/game_object.h"
 #include "scene/camera.h"
 #include "core/asserts.h"

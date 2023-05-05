@@ -1,12 +1,14 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "core/common.h"
 #include "render/buffers.h"
 #include "render/vertex_array_object.h"
 #include "render/shader.h"
 #include "render/texture.h"
 
+#include "core/glm_declarations.h"
+
+class GLFWwindow;
 class Scene;
 
 class Renderer {

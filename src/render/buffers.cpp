@@ -1,5 +1,7 @@
 #include "buffers.h"
 
+#include <GLEW/glew.h>
+
 //Vertex buffer
 
 VertexBuffer::VertexBuffer(const float* verticesData, const unsigned int size) {

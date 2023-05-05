@@ -1,13 +1,13 @@
 #ifndef TEXTURE
 #define TEXTURE
 
-#include "core/common.h"
+#include <string>
 
 class Texture
 {
 public:
     Texture();
-    Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit = 0);
+    Texture(std::string pathToTexture, unsigned int format, unsigned int inTextureUnit = 0);
     void Bind();
 
 private:

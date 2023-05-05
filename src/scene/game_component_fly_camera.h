@@ -2,7 +2,6 @@
 #define GAME_COMPONENT_FLYCAMERA_H
 
 #include "scene/game_component.h"
-#include "core/common.h"
 
 class GameComponentFlyCamera : public GameComponent {
 public:

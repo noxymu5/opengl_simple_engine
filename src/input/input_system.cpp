@@ -1,7 +1,8 @@
 #include "input/input_system.h"
 
+#include <GLFW/glfw3.h>
+
 #include "core/asserts.h"
-#include "render/renderer.h"
 
 static InputSystem* instance;
 

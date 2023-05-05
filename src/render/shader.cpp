@@ -1,11 +1,13 @@
 #include "shader.h"
 
-#include <string>
+#include <GLEW/glew.h>
 #include <unordered_map>
 #include <iterator>
+#include <fstream>
 #include <sstream>
 
 #include "core/asserts.h"
+#include "resource_system/shader_loader.h"
 
 static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToLayoutMap = {
     {"vec2", {GL_FLOAT, 2, sizeof(float) * 2}},
@@ -13,10 +15,11 @@ static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToL
 };
 
 Shader::Shader(const std::string &path) {
-    std::string* shaderSources = ParseShaderSources(path);
-    CompileShaderProgram(shaderSources);
-    
-    delete[] shaderSources;
+    ShaderLoader loader(path);
+    ResourceShader resource = loader.Get();
+
+    CreateAttributreLayout(resource);
+    CompileShaderProgram(resource.shaderSources);
 }
 
 void Shader::Use() {
@@ -54,76 +57,13 @@ void Shader::SetUniform(std::string name, const glm::vec3& vector) {
     glUniform3fv(uniformLocation, 1, glm::value_ptr(vector));
 };
 
-std::string Shader::LoadCodeFromFile(std::string filePath) {
-    std::ifstream fileStream;
-    fileStream.exceptions (std::ifstream::failbit | std::ifstream::badbit | std::ifstream::eofbit);
-    
-    try {
-        fileStream.open(filePath, std::ifstream::binary);	
+void Shader::CreateAttributreLayout(ResourceShader resource) {
+    for (auto& attributeType: resource.attributeTypes) {
+        auto it = typeToLayoutMap.find(attributeType);
+        ASSERT(it != typeToLayoutMap.end(), "Unknown attribute type %s", attributeType.c_str())
+
+        PushLayout(it->second);
     }
-    catch(std::ifstream::failure e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_OPENED - " << e.what() << std::endl;
-    }
-
-    fileStream.seekg (0, fileStream.end);
-    int fileLength = fileStream.tellg();
-    fileStream.seekg (0, fileStream.beg);
-
-    std::stringstream shaderSourceStream;
-    try {
-        shaderSourceStream << fileStream.rdbuf();
-    }
-    catch (std::ifstream::failure e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ - " << e.what() << std::endl;
-    }
-
-    fileStream.close();
-
-    return shaderSourceStream.str();
-}
-
-std::string* Shader::ParseShaderSources(const std::string& filePath) {
-    std::ifstream shaderFile(filePath);
-    ASSERT(shaderFile, "Can not open shader file")
-
-    ShaderType type;
-    std::string line;
-    bool isAttributeSection = false;
-    
-    std::string* shaderSources = new std::string[(int)(ShaderType::Count)];
-    while (getline(shaderFile, line)) {
-        if (line.find("#type") != std::string::npos) {
-            if (line.find("vertex") != std::string::npos) {
-                type = ShaderType::Vertex;
-            } else if (line.find("fragment") != std::string::npos) {
-                type = ShaderType::Fragment;
-            } else {
-                std::cout << "Undefined shader type in string: " << line << "\n";
-            }
-
-            continue;
-        }
-
-        if (!isAttributeSection && line.find("#attributes") != std::string::npos) {
-            isAttributeSection = true;
-            continue;
-        } else if (isAttributeSection && line.find("attributes_end") != std::string::npos) {
-            isAttributeSection = false;
-            continue;
-        }
-
-        shaderSources[(int)type].append(line + "\n");
-
-        if (isAttributeSection) {
-            for (auto& it: typeToLayoutMap) {
-                if (line.find(it.first) != std::string::npos){
-                    PushLayout(it.second);
-                }
-            }    
-        }
-    }
-
-    return shaderSources;
 }
 
 void Shader::PushLayout(VertexBufferLayoutTypeInfo info) {

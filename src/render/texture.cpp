@@ -1,15 +1,13 @@
 #include "texture.h"
 
-#include "stb_image.h"
+#include <GLEW/glew.h>
 
-Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
-    int width, height, nrChannels;
-    unsigned char *textureData = stbi_load(pathToTexture.c_str(), &width, &height, &nrChannels, 0);
-    if (!textureData) {
-        std::cout << "ERROR::TEXTURE::LOAD_FAILED" << std::endl;
-        return;
-    }
+#include "resource_system/texture_loader.h"
+#include "core/asserts.h"
 
+Texture::Texture(std::string pathToTexture, unsigned int format, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
+    TextureLoader loader(pathToTexture);
+    
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
 
@@ -18,10 +16,8 @@ Texture::Texture(std::string pathToTexture, GLenum format, unsigned int inTextur
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, textureData);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, loader.Width(), loader.Height(), 0, format, GL_UNSIGNED_BYTE, loader.Get());
     glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(textureData);
 }
 
 void Texture::Bind() {

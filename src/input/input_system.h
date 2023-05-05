@@ -1,7 +1,7 @@
 #ifndef INPUT_SYSTEM_H
 #define IMPUT_SYSTEM
 
-#include "core/common.h"
+class GLFWwindow;
 
 class InputSystem {
 public:

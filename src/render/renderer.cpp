@@ -1,5 +1,8 @@
 #include "renderer.h"
 
+#include <GLEW/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "core/logging.h"
 #include "core/asserts.h"
 #include "scene/scene.h"
@@ -13,8 +16,8 @@ void Renderer::Init() {
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    texture = new Texture("C:\\home_projects\\cpp_proj\\opengl_simple_engine\\assets\\textures\\container.jpg", GL_RGB);
-    cubeShader = new Shader("C:\\home_projects\\cpp_proj\\opengl_simple_engine\\shaders\\simple_lit_shader.glsl");
+    texture = new Texture("container.jpg", GL_RGB);
+    cubeShader = new Shader("simple_lit_shader.glsl");
     
     vaoCube = new VertexArrayObject();
     vaoCube->Bind();

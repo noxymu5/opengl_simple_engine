@@ -1,8 +1,6 @@
 #ifndef BUFFERS
 #define BUFFERS
 
-#include "core/common.h"
-
 class VertexBuffer
 {
 private:

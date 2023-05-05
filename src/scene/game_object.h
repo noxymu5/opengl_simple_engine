@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "core/common.h"
 #include "math/transform.h"
 
 class GameComponent;

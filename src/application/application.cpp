@@ -1,12 +1,15 @@
 #include "application.h"
 
-#include "core/common.h"
+#include <GLEW/glew.h>
+#include <GLFW/glfw3.h>
 
 #include "stb_image.h"
 
 #include "core/asserts.h"
 #include "core/logging.h"
 
+#include "application/application_arguments.h"
+#include "resource_system/resource_system.h"
 #include "input/input_system.h"
 #include "render/renderer.h"
 #include "scene/scene.h"
@@ -19,11 +22,12 @@ static void GlResizeCallback(GLFWwindow* window, int windowWidth, int windowHeig
 
 Application::Application() { appInstance = this; }
 
-void Application::Init() {
+void Application::Init(ApplicationArguments args) {
     stbi_set_flip_vertically_on_load(true);
 
     CreateWindow();
 
+    resSystem = new ResourceSystem(args.GetArgument(ArgumentType::RESOURCES_ROOT));
     inputSystem = InputSystem::Create(window);
     currentScene = new Scene();
     renderer = new Renderer(window);

@@ -1,7 +1,7 @@
 #ifndef TRANSFORM
 #define TRANSFORM
 
-#include "core/common.h"
+#include "core/glm_declarations.h"
 
 class Transform
 {
