@@ -72,6 +72,8 @@
         "numeric": "cpp",
         "random": "cpp",
         "ratio": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "chrono": "cpp",
+        "set": "cpp"
     }
 }

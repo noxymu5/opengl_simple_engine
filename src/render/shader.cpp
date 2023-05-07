@@ -31,8 +31,8 @@ void Shader::BindVertexAttributes() {
     for(int i = 0; i < typesLayout.size(); ++i) {
         VertexBufferLayoutTypeInfo& info = typesLayout[i];
 
-        glVertexAttribPointer(i, info.count, info.type, GL_FALSE, stride, (void*)currentOffset);
         glEnableVertexAttribArray(i);
+        glVertexAttribPointer(i, info.count, info.type, GL_FALSE, stride, (void*)currentOffset);
         currentOffset += info.size;
     }
 }

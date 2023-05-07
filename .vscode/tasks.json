@@ -16,12 +16,16 @@
                 "src\\render\\**.cpp",
                 "src\\resource_system\\**.cpp",
                 "src\\scene\\**.cpp",
+
                 "-Ldependencies\\lib",
-                "-Isrc",
                 "-lopengl32",
                 "-lglfw3",
                 "-lglew32",
+                "-lassimp",
+
+                "-Isrc",
                 "-Idependencies\\include",
+                
                 "-o", "build\\engine"
             ]
         }

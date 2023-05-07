@@ -8,6 +8,7 @@ private:
 
 public:
     VertexBuffer(const float* verticesData, const unsigned int size);
+    VertexBuffer(void* verticesData, const unsigned int size);
     ~VertexBuffer();
 
     void Bind() const;

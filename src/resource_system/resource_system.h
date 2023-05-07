@@ -10,6 +10,7 @@ public:
 
     std::string PathToTexture(std::string path);
     std::string PathToShader(std::string path);
+    std::string PathToModel(std::string path);
 private:
     std::string rootPath;
 };

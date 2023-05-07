@@ -9,6 +9,8 @@
 #include "scene/camera.h"
 
 #include "core/helpers.h"
+#include "resource_system/model_loader.h"
+#include "resource_system/mesh_resource.h"
 
 Renderer::Renderer(GLFWwindow* inWindow) : window(inWindow) {};
 
@@ -18,10 +20,15 @@ void Renderer::Init() {
 
     texture = new Texture("container.jpg", GL_RGB);
     cubeShader = new Shader("simple_lit_shader.glsl");
+    ModelLoader loader("monke.fbx");
+    MeshResource res = loader.Get();
+
+    count = res.indices.size();
     
     vaoCube = new VertexArrayObject();
     vaoCube->Bind();
-        vBufferCube = new VertexBuffer(HELPERS::cubeVertexDataUvNormals, sizeof(HELPERS::cubeVertexDataUvNormals));
+        vBufferCube = new VertexBuffer((void*)&res.verticies[0], sizeof(Vertex) * res.verticies.size());
+        iBuffer = new IndexBuffer(&res.indices[0], res.indices.size() * sizeof(unsigned int));
         cubeShader->BindVertexAttributes();
     vaoCube->UnBind();
 }
@@ -49,10 +56,10 @@ void Renderer::Render(Scene* scene) {
         cubeShader->SetUniform("viewProj", viewProj);
         cubeShader->SetUniform("model", cubeTrf);
         cubeShader->SetUniform("ulightColor", glm::vec3(1.0f));
-        cubeShader->SetUniform("ulightPos", glm::vec3(0, 0, 4));
+        cubeShader->SetUniform("ulightPos", glm::vec3(0, 0, -4));
         cubeShader->SetUniform("uViewPos", cam->GetPos());
         
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
     vaoCube->UnBind();
 
     glfwSwapBuffers(window);
