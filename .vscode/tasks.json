@@ -2,10 +2,10 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "command": "g++",
     "tasks": [
         {
             "label": "Build",
+            "command": "g++",
             "args": [
                 "-g",
                 "src\\**.cpp",
@@ -16,17 +16,15 @@
                 "src\\render\\**.cpp",
                 "src\\resource_system\\**.cpp",
                 "src\\scene\\**.cpp",
-
                 "-Ldependencies\\lib",
                 "-lopengl32",
                 "-lglfw3",
                 "-lglew32",
                 "-lassimp",
-
                 "-Isrc",
                 "-Idependencies\\include",
-                
-                "-o", "build\\engine"
+                "-o",
+                "build\\engine"
             ]
         }
     ]
