@@ -1,14 +1,14 @@
 #ifndef TEXTURE
 #define TEXTURE
 
-#include <string>
+#include "resource_system/resource/resource_texture.h"
 
 class Texture
 {
 public:
-    Texture();
-    Texture(std::string pathToTexture, unsigned int format, unsigned int inTextureUnit = 0);
-    void Bind();
+    Texture(ResourceTexture res, unsigned int inTextureUnit = 0);
+    void Use();
+    void Deactivate();
 
 private:
     unsigned int id = -1;

@@ -23,10 +23,20 @@ InputSystem* InputSystem::Get() {
 GLFWwindow* InputSystem::GetWindow() { return window; }
 
 void InputSystem::GetCursorPos(double* posX, double* posY) {
-    glfwGetCursorPos(InputSystem::Get()->GetWindow(), posX, posY);
+    glfwGetCursorPos(instance->GetWindow(), posX, posY);
 }
 
 bool InputSystem::IsKeyDown(int key) {
-    int state = glfwGetKey(InputSystem::Get()->GetWindow(), key);
+    int state = glfwGetKey(instance->GetWindow(), key);
     return state == GLFW_PRESS || state == GLFW_REPEAT;
+}
+
+bool InputSystem::IsKeyPressed(int key) {
+    int state = glfwGetKey(instance->GetWindow(), key);
+    return state == GLFW_PRESS;
+}
+
+bool InputSystem::IsKeyReleased(int key) {
+    int state = glfwGetKey(instance->GetWindow(), key);
+    return state == GLFW_RELEASE;
 }

@@ -34,8 +34,7 @@ private:
     VertexArrayObject* vaoCube;
     VertexBuffer* vBufferCube;
     IndexBuffer* iBuffer;
-    Shader* cubeShader;
-    Texture* texture;
+    Shader* mainModelShader;
     glm::mat4 cubeTrf;
     int count;
 };

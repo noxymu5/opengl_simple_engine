@@ -1,8 +1,8 @@
-#include "scene/game_component_fly_camera.h"
+#include "game_component_fly_camera.h"
 
 #include <GLFW/glfw3.h>
-#include <glm/ext/matrix_transform.hpp>
 
+#include "core/glm_declarations.h"
 #include "input/input_system.h"
 #include "core/logging.h"
 

@@ -2,12 +2,10 @@
 
 #include <GLEW/glew.h>
 
-#include "resource_system/texture_loader.h"
+#include "resource_system/loader/texture_loader.h"
 #include "core/asserts.h"
 
-Texture::Texture(std::string pathToTexture, unsigned int format, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
-    TextureLoader loader(pathToTexture);
-    
+Texture::Texture(ResourceTexture res, unsigned int inTextureUnit) : textureUnit(inTextureUnit) {
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
 
@@ -16,11 +14,15 @@ Texture::Texture(std::string pathToTexture, unsigned int format, unsigned int in
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, format, loader.Width(), loader.Height(), 0, format, GL_UNSIGNED_BYTE, loader.Get());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, res.width, res.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, res.data);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::Bind() {
+void Texture::Use() {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, id);
+}
+
+void Texture::Deactivate() {
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

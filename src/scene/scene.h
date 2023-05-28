@@ -15,6 +15,7 @@ public:
     GameObject* CreateGameObject();
     Camera* CreateCamera();
     Camera* GetCamera() { return camera; }
+    std::vector<GameObject*>& GetGameObjects() { return objects; }
 
 private:
     std::vector<GameObject*> objects;

@@ -1,11 +1,17 @@
 #include "scene/game_object.h"
 
-#include "scene/game_component.h"
+#include "game_components/game_component.h"
+
+void GameObject::Init() {
+    for(auto comp : components) {
+        comp.second->Init();
+    }
+}
 
 void GameObject::Update(float dt) {
     UpdateImpl(dt);
 
-    for(int idx = 0; idx < components.size(); idx += 1) {
-        components[idx]->Update(dt);
+    for(auto comp : components) {
+        comp.second->Update(dt);
     }
 }

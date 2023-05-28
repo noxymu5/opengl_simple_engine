@@ -50,8 +50,6 @@ void Application::Execute() {
         float deltaTime = currTime - lastTime;
         lastTime = currTime;
 
-        // LOG("delta time %f", deltaTime)
-
         currentScene->Update(deltaTime);
         renderer->Render(currentScene);
 
@@ -75,7 +73,7 @@ void Application::CreateWindow() {
 
     glfwSetErrorCallback(GlErrorCallback);
 
-    window = glfwCreateWindow(windowWidth, windowHeight, "Test window", NULL, NULL);
+    window = glfwCreateWindow(windowWidth, windowHeight, "Buran", NULL, NULL);
     if (window == NULL) {
         ASSERT_FAIL("Failed to create GLFW window")
         glfwTerminate();

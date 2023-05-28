@@ -1,10 +1,12 @@
 #ifndef GAME_COMPONENT_FLYCAMERA_H
 #define GAME_COMPONENT_FLYCAMERA_H
 
-#include "scene/game_component.h"
+#include "game_components/game_component.h"
 
 class GameComponentFlyCamera : public GameComponent {
 public:
+    INIT_COMPONENT(GameComponentFlyCamera)
+
     GameComponentFlyCamera(GameObject* owner) : GameComponent(owner) {
         position = owner->GetPos();
         forward = owner->GetTransform().Forward();

@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-#include "resource_system/resource_shader.h"
+#include "resource_system/resource/resource_shader.h"
 
 class ShaderLoader {
 public:

@@ -4,28 +4,14 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "type": "shell",
             "label": "Build",
-            "command": "g++",
-            "args": [
-                "-g",
-                "src\\**.cpp",
-                "src\\application\\**.cpp",
-                "src\\core\\**.h",
-                "src\\input\\**.cpp",
-                "src\\math\\**.cpp",
-                "src\\render\\**.cpp",
-                "src\\resource_system\\**.cpp",
-                "src\\scene\\**.cpp",
-                "-Ldependencies\\lib",
-                "-lopengl32",
-                "-lglfw3",
-                "-lglew32",
-                "-lassimp",
-                "-Isrc",
-                "-Idependencies\\include",
-                "-o",
-                "build\\engine"
-            ]
+            "command": "${workspaceFolder}\\build_tools\\build.bat",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

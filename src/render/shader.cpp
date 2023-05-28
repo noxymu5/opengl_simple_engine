@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "core/asserts.h"
-#include "resource_system/shader_loader.h"
+#include "resource_system/loader/shader_loader.h"
 
 static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToLayoutMap = {
     {"vec2", {GL_FLOAT, 2, sizeof(float) * 2}},
