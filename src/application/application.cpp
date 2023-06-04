@@ -12,7 +12,7 @@
 #include "resource_system/resource_system.h"
 #include "input/input_system.h"
 #include "render/renderer.h"
-#include "scene/scene.h"
+#include "scene/scene_factory/scene_factory.h"
 
 static Application* appInstance;
 
@@ -27,9 +27,12 @@ void Application::Init(ApplicationArguments args) {
 
     CreateWindow();
 
+    sceneFactory = new SceneFactory();
+    RegisterComponents(sceneFactory);
+
     resSystem = new ResourceSystem(args.GetArgument(ArgumentType::RESOURCES_ROOT));
     inputSystem = InputSystem::Create(window);
-    currentScene = new Scene();
+    currentScene = sceneFactory->CreateScene(args);
     renderer = new Renderer(window);
     renderer->Resize(windowWidth, windowHeight);
     renderer->Init();

@@ -12,7 +12,8 @@
             "program": "${workspaceFolder}\\build\\engine",
             "preLaunchTask": "Build",
             "args": [
-                "-resourcesRoot", "${workspaceFolder}\\resources"
+                "-resourcesRoot", "${workspaceFolder}\\resources",
+                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_scene.bscene"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -39,7 +40,8 @@
             "request": "launch",
             "program": "${workspaceFolder}\\build\\engine",
             "args": [
-                "-resourcesRoot", "${workspaceFolder}\\resources"
+                "-resourcesRoot", "${workspaceFolder}\\resources",
+                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_scene.buran"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

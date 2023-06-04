@@ -23,6 +23,9 @@ public:
     glm::vec3 GetPos() { return transform.GetPosition(); }
     
     void SetPos(glm::vec3 pos) { transform.SetPosition(pos); }
+    void SetScale(glm::vec3 pos) { transform.Scale(pos); }
+
+    void SetName(std::string newName) { name = newName; }
 
     template<class CompT>
     CompT* AddComponent() {
@@ -51,6 +54,7 @@ protected:
     virtual void UpdateImpl(float dt) {}
 
 private:
+    std::string name;
     Transform transform;
 
     std::map<std::string, GameComponent*> components;

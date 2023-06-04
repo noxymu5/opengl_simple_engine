@@ -4,18 +4,28 @@
 #include "core/logging.h"
 
 static const std::map<std::string, ArgumentType> stringToArgumentType = {
-    {"-resourcesRoot", ArgumentType::RESOURCES_ROOT}
+    {"-resourcesRoot", ArgumentType::RESOURCES_ROOT},
+    {"-scene", ArgumentType::SCENE_NAME}
 };
 
 ApplicationArguments::ApplicationArguments(int argc, char* argv[]) {
     ParseArguments(argc, argv);
 }
 
-std::string ApplicationArguments::GetArgument(ArgumentType type) {
+std::string ApplicationArguments::TryGetArgument(ArgumentType type) {
     auto it = argumentsMap.find(type);
-    ASSERT(it != argumentsMap.end(), "can not find specified argument")
+    if (it == argumentsMap.end()) {
+        return "";
+    }
 
     return it->second;
+}
+
+std::string ApplicationArguments::GetArgument(ArgumentType type) {
+    std::string argument = TryGetArgument(type);
+    ASSERT(!argument.empty(), "Can not find argument")
+
+    return argument;
 }
 
 void ApplicationArguments::ParseArguments(int argc, char* argv[]) {

@@ -6,13 +6,15 @@
 
 enum class ArgumentType {
     APPLICATION_ROOT,
-    RESOURCES_ROOT
+    RESOURCES_ROOT,
+    SCENE_NAME
 };
 
 class ApplicationArguments {
 public:
     ApplicationArguments(int argc, char* argv[]);
 
+    std::string TryGetArgument(ArgumentType type);
     std::string GetArgument(ArgumentType type);
 private:
     std::map<ArgumentType, std::string> argumentsMap;

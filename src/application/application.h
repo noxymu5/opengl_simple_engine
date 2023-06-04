@@ -9,6 +9,7 @@ class ResourceSystem;
 class InputSystem;
 class Renderer;
 class Scene;
+class SceneFactory;
 
 class Application {
 public:
@@ -21,6 +22,8 @@ public:
     void Resize(GLFWwindow* window, int windowWidth, int windowHeight);
 
 private:
+    SceneFactory* sceneFactory;
+
     ResourceSystem* resSystem;
     InputSystem* inputSystem;
     Renderer* renderer;
@@ -34,6 +37,7 @@ private:
     void CreateWindow();
     bool IsWindowOpen() const;
     static void GlErrorCallback(int error, const char* description);
+    void RegisterComponents(SceneFactory* SceneFactory);
     
 };
 

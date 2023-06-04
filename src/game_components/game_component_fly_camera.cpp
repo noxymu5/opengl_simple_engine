@@ -6,6 +6,11 @@
 #include "input/input_system.h"
 #include "core/logging.h"
 
+#include "game_components/serializers/game_component_serializer.h"
+
+BEGIN_SERIALIZER(GameComponentFlyCamera)
+END_SERIALIZER(GameComponentFlyCamera)
+
 void GameComponentFlyCamera::Update(float dt) {
     UpdateDirection();
 

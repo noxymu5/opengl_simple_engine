@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.buran": "yaml",
         "array": "cpp",
         "atomic": "cpp",
         "*.tcc": "cpp",
@@ -74,6 +75,7 @@
         "ratio": "cpp",
         "numbers": "cpp",
         "chrono": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "valarray": "cpp"
     }
 }

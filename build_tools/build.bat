@@ -11,7 +11,7 @@ FOR /R %%f in (*.cpp) do (
 @REM ECHO "Files: " %sourceFiles%
 
 SET includeArgs=-Isrc -Idependencies/include
-SET linkerArgs=-Ldependencies/lib -lopengl32 -lglfw3 -lglew32 -lassimp
+SET linkerArgs=-Ldependencies/lib -lopengl32 -lglfw3 -lglew32 -lassimp -lyaml-cpp
 
 ECHO "Start building"
 g++ -g %sourceFiles% %linkerArgs% %includeArgs% -o build/engine

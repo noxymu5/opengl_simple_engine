@@ -2,18 +2,19 @@
 #define SCENE_H
 
 #include <vector>
+#include <string>
 
 class GameObject;
 class Camera;
 
 class Scene {
 public:
-    Scene();
+    Scene() {}
 
     void Update(float dt);
 
-    GameObject* CreateGameObject();
-    Camera* CreateCamera();
+    GameObject* CreateGameObject(std::string name);
+    Camera* CreateCamera(std::string name);
     Camera* GetCamera() { return camera; }
     std::vector<GameObject*>& GetGameObjects() { return objects; }
 
