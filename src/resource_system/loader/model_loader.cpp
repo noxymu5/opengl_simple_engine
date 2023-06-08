@@ -8,6 +8,8 @@
 
 #include "core/glm_declarations.h"
 
+#include "dependencies_ext/assimp/math.h"
+
 #include "resource_system/resource/resource_mesh.h"
 #include "resource_system/resource/resource_material.h"
 
@@ -32,17 +34,21 @@ void ModelLoader::Load() {
     Assimp::Importer importer;
 
     for(std::filesystem::path path : modelsPath) {
-        const aiScene* scene = importer.ReadFile(path.string(), 0);
+        const aiScene* scene = importer.ReadFile(path.string(), aiProcess_JoinIdenticalVertices);
         ASSERT(scene != nullptr, "Failed to open model by path %s: %s", path.c_str(), importer.GetErrorString())
         
         ResourceMesh* meshResource = new ResourceMesh();
 
         const aiMesh* mesh = scene->mMeshes[0];
+        const aiMatrix4x4 trf = scene->mRootNode->mTransformation;
+
 
         for(int idx = 0; idx < mesh->mNumVertices; ++idx) {
             aiVector3D vert = mesh->mVertices[idx];
             aiVector3D normal = mesh->mNormals[idx];
             aiVector3D uv = mesh->mTextureCoords[0][idx];
+
+            vert = Assimp::Math::TransformVector(trf, vert);
 
             meshResource->verticies.push_back( {
                 glm::vec3(vert.x, vert.y, vert.z),

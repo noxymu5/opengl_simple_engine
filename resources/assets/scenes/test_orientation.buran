@@ -1,0 +1,20 @@
+---
+objects:
+  camera:
+    type: Camera
+    pos: [0, 0, -20]
+    components:
+        GameComponentFlyCamera: null
+  torus_1:
+    type: GameObject
+    pos: [1, 0, 0]
+    components:
+      GameComponentGeometry:
+        modelName: "cube.fbx"
+  torus_2:
+    type: GameObject
+    pos: [-1, 0, 0]
+    components:
+      GameComponentGeometry:
+        modelName: "torus.glb"
+---

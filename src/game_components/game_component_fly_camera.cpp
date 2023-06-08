@@ -12,14 +12,14 @@ BEGIN_SERIALIZER(GameComponentFlyCamera)
 END_SERIALIZER(GameComponentFlyCamera)
 
 void GameComponentFlyCamera::Update(float dt) {
-    UpdateDirection();
+    // UpdateDirection();
 
-    glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
-    glm::vec3 up = glm::cross(forward, right);
+    // glm::vec3 right = glm::cross(glm::vec3(0, 1, 0), forward);
+    // glm::vec3 up = glm::cross(forward, right);
 
-    UpdatePosition(dt, right, up);
+    UpdatePosition(dt, glm::vec3(0), glm::vec3(0));
 
-    owner->SetTransform(glm::lookAt(position, position + forward, up));
+    // owner->SetTransform(glm::lookAt(position, position + forward, up));
 }
 
 void GameComponentFlyCamera::UpdateDirection() {
@@ -49,6 +49,10 @@ void GameComponentFlyCamera::UpdateDirection() {
 void GameComponentFlyCamera::UpdatePosition(float dt, glm::vec3 right, glm::vec3 up) {
     glm::vec3 movementVector(0);
 
+    glm::vec3 forward = owner->GetTransform().Forward();
+    right = owner->GetTransform().Right();
+    up = owner->GetTransform().Up();
+
     if (InputSystem::IsKeyDown(GLFW_KEY_W)) {
         movementVector += forward * dt * movementSpeed;
     }
@@ -77,5 +81,5 @@ void GameComponentFlyCamera::UpdatePosition(float dt, glm::vec3 right, glm::vec3
         return;
     }
 
-    position += movementVector;
+    owner->GetTransform().Translate(movementVector);
 }

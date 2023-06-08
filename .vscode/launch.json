@@ -13,7 +13,7 @@
             "preLaunchTask": "Build",
             "args": [
                 "-resourcesRoot", "${workspaceFolder}\\resources",
-                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_scene.bscene"
+                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_orientation.bscene"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -41,7 +41,7 @@
             "program": "${workspaceFolder}\\build\\engine",
             "args": [
                 "-resourcesRoot", "${workspaceFolder}\\resources",
-                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_scene.buran"
+                "-scene", "${workspaceFolder}\\resources\\assets\\scenes\\test_orientation.buran"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

@@ -7,6 +7,7 @@
 
 const char* keyPosition = "pos";
 const char* keyScale = "scale";
+const char* keyRotation = "rotation";
 const char* keyComponents = "components";
 
 void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene, std::string name, YAML::Node gameObjectContents) {
@@ -22,20 +23,31 @@ void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene,
         gameObject->SetScale(scale.as<glm::vec3>());
     }
 
-    YAML::Node components = gameObjectContents[keyComponents];
-    
-    LOG("Start creating components")
-    for(YAML::const_iterator it = components.begin(); it != components.end(); ++it) {
-        auto first = it->first;
+    if (gameObjectContents[keyRotation]) {
+        YAML::Node rotation = gameObjectContents[keyRotation];
+        glm::vec3 angles = rotation.as<glm::vec3>();
 
-        GameComponentSerializer* serializer = sceneFactory->GetGameComponentSerializer(first.as<std::string>());
-        if (serializer == nullptr) {
-            continue;
-        }
-
-        serializer->Deserialize(gameObject, it->second);
+        gameObject->GetTransform().RotateX(angles.x);
+        gameObject->GetTransform().RotateY(angles.y);
+        gameObject->GetTransform().RotateZ(angles.z);
     }
-    LOG("Finish creating components")
+
+    if (gameObjectContents[keyComponents]) {
+        YAML::Node components = gameObjectContents[keyComponents];
+    
+        LOG("Start creating components")
+        for(YAML::const_iterator it = components.begin(); it != components.end(); ++it) {
+            auto first = it->first;
+
+            GameComponentSerializer* serializer = sceneFactory->GetGameComponentSerializer(first.as<std::string>());
+            if (serializer == nullptr) {
+                continue;
+            }
+
+            serializer->Deserialize(gameObject, it->second);
+        }
+        LOG("Finish creating components")
+    }
     
     gameObject->Init();
 }

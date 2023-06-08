@@ -14,8 +14,8 @@ public:
     void Init();
     void Update(float dt);
     
-    void GetTransform(Transform* trf) { trf = &transform; }
-    Transform GetTransform() {return transform; }
+    void GetTransform(Transform& trf) { trf = transform; }
+    Transform& GetTransform() {return transform; }
     void SetTransform(Transform trf) { transform = trf; }
     void SetTransform(glm::mat4 trf) { transform.SetMatrix(trf); }
 
