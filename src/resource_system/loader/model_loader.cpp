@@ -34,15 +34,24 @@ void ModelLoader::Load() {
     Assimp::Importer importer;
 
     for(std::filesystem::path path : modelsPath) {
-        const aiScene* scene = importer.ReadFile(path.string(), aiProcess_JoinIdenticalVertices);
+        const aiScene* scene = importer.ReadFile(path.string(), 0);
         ASSERT(scene != nullptr, "Failed to open model by path %s: %s", path.c_str(), importer.GetErrorString())
         
         ResourceMesh* meshResource = new ResourceMesh();
+        
+        std::string fileName = path.filename().string();
 
-        const aiMesh* mesh = scene->mMeshes[0];
-        const aiMatrix4x4 trf = scene->mRootNode->mTransformation;
+        const aiNode* currentNode;
 
+        if (fileName == "snowman.fbx") {
+            currentNode = scene->mRootNode->mChildren[3];
+        } else {
+            currentNode = scene->mRootNode->mChildren[0];
+        }
 
+        const aiMatrix4x4 trf =currentNode->mTransformation;
+        const aiMesh* mesh = scene->mMeshes[currentNode->mMeshes[0]];
+        
         for(int idx = 0; idx < mesh->mNumVertices; ++idx) {
             aiVector3D vert = mesh->mVertices[idx];
             aiVector3D normal = mesh->mNormals[idx];
@@ -82,7 +91,6 @@ void ModelLoader::Load() {
             meshResource->materialName = materialName.C_Str();
         }
 
-        std::string fileName = path.filename().string();
         resSys->RegisterResource(fileName, meshResource);
         LOG("finished loading %s", fileName.c_str())
     }

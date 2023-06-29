@@ -17,7 +17,7 @@ void Renderer::Init() {
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    mainModelShader = new Shader("simple_lit_shader.glsl");
+    mainModelShader = new Shader("simple_shader.glsl");
 }
 
 void Renderer::Terminate() {
@@ -31,8 +31,8 @@ void Renderer::Render(Scene* scene) {
     Camera* cam = scene->GetCamera();
     Transform camTrf = cam->GetTransform();
     glm::vec3 camPos = camTrf.GetPosition();
-
-    glm::mat4 viewProj = projectionMatr * camTrf.Get();
+    
+    glm::mat4 viewProj = projectionMatr * cam->GetViewMatrix();
 
     std::vector<GameObject*> objects = scene->GetGameObjects();
     
@@ -47,12 +47,14 @@ void Renderer::Render(Scene* scene) {
         mainModelShader->Use();
         mainModelShader->BindVertexAttributes();
 
-        mainModelShader->SetUniform("viewProj", viewProj);
-        mainModelShader->SetUniform("ulightColor", glm::vec3(1.0f));
-        mainModelShader->SetUniform("ulightPos", glm::vec3(0, 0, -4));
-        mainModelShader->SetUniform("uViewPos", cam->GetPos());
+        mainModelShader->SetUniform("trf", viewProj * gameObject->GetTransform().Get());
 
-        mainModelShader->SetUniform("model", gameObject->GetTransform().Get());
+        // mainModelShader->SetUniform("viewProj", viewProj);
+        // mainModelShader->SetUniform("ulightColor", glm::vec3(1.0f));
+        // mainModelShader->SetUniform("ulightPos", glm::vec3(0, 3, -3));
+        // mainModelShader->SetUniform("uViewPos", cam->GetPos());
+
+        // mainModelShader->SetUniform("model", gameObject->GetTransform().Get());
         comp->EndDraw();
     }
 

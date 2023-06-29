@@ -1,9 +1,9 @@
 #include "transform.h"
 
+#include <glm/gtx/quaternion.hpp>
+#include "core/logging.h"
+
 Transform::Transform() {
-    for(int idx = 0; idx < 4; ++idx){
-        matrix[idx][idx] = 1;
-    }
 }
 
 Transform::~Transform() {
@@ -72,6 +72,28 @@ void Transform::RotateX(float angle) {
     rot[2][2] = glm::cos(angle);
 
     matrix = matrix * rot;
+}
+
+void Transform::SetRotationX(float angle) {
+    matrix[1][1] = glm::cos(angle);
+    matrix[1][2] = glm::sin(angle);
+    matrix[2][1] = -glm::sin(angle);
+    matrix[2][2] = glm::cos(angle);
+}
+
+void Transform::SetEulerAngles(glm::vec3 angles) {
+    angles.x = glm::radians(angles.x);
+    angles.y = glm::radians(angles.y);
+    angles.z = glm::radians(angles.z);
+
+    glm::quat quat(angles);
+    glm::mat3 res = glm::toMat4(quat);
+    
+    for(int i = 0; i < 3; ++i) {
+        for(int j = 0; j < 3; ++j) {
+            matrix[i][j] = res[i][j];
+        }
+    }
 }
 
 void Transform::SetPosition(glm::vec3 position) {

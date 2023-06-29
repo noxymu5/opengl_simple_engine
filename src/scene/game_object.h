@@ -52,10 +52,10 @@ public:
 
 protected:
     virtual void UpdateImpl(float dt) {}
+    Transform transform;
 
 private:
     std::string name;
-    Transform transform;
 
     std::map<std::string, GameComponent*> components;
 };

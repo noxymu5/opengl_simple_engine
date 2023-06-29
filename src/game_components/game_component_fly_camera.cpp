@@ -3,23 +3,29 @@
 #include <GLFW/glfw3.h>
 
 #include "core/glm_declarations.h"
+#include <glm/gtx/quaternion.hpp>
 #include "input/input_system.h"
 #include "core/logging.h"
 
 #include "game_components/serializers/game_component_serializer.h"
 
 BEGIN_SERIALIZER(GameComponentFlyCamera)
+EXPOTR_FIELD(movementSpeed, float)
+EXPOTR_FIELD(movementSpeedScale, float)
 END_SERIALIZER(GameComponentFlyCamera)
 
 void GameComponentFlyCamera::Update(float dt) {
-    // UpdateDirection();
+    UpdateSpeed();
+    UpdateDirection();
+    UpdatePosition(dt);
+}
 
-    // glm::vec3 right = glm::cross(glm::vec3(0, 1, 0), forward);
-    // glm::vec3 up = glm::cross(forward, right);
-
-    UpdatePosition(dt, glm::vec3(0), glm::vec3(0));
-
-    // owner->SetTransform(glm::lookAt(position, position + forward, up));
+void GameComponentFlyCamera::UpdateSpeed() {
+    if (InputSystem::IsKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+        currentSpeed = movementSpeed * movementSpeedScale;
+    } else {
+        currentSpeed = movementSpeed;
+    }
 }
 
 void GameComponentFlyCamera::UpdateDirection() {
@@ -41,40 +47,38 @@ void GameComponentFlyCamera::UpdateDirection() {
         pitch = minPitch;
     }
 
-    forward.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    forward.y = sin(glm::radians(pitch));
-    forward.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    owner->GetTransform().SetEulerAngles(glm::vec3(pitch, yaw, 0));
 }
 
-void GameComponentFlyCamera::UpdatePosition(float dt, glm::vec3 right, glm::vec3 up) {
+void GameComponentFlyCamera::UpdatePosition(float dt) {
     glm::vec3 movementVector(0);
 
     glm::vec3 forward = owner->GetTransform().Forward();
-    right = owner->GetTransform().Right();
-    up = owner->GetTransform().Up();
+    glm::vec3 right = owner->GetTransform().Right();
+    glm::vec3 up = owner->GetTransform().Up();
 
     if (InputSystem::IsKeyDown(GLFW_KEY_W)) {
-        movementVector += forward * dt * movementSpeed;
+        movementVector += forward * dt * currentSpeed;
     }
     
     if (InputSystem::IsKeyDown(GLFW_KEY_S)) {
-        movementVector -= forward * dt * movementSpeed;
+        movementVector -= forward * dt * currentSpeed;
     }
     
     if (InputSystem::IsKeyDown(GLFW_KEY_A)) {
-        movementVector += right * dt * movementSpeed;
+        movementVector += right * dt * currentSpeed;
     }
     
     if (InputSystem::IsKeyDown(GLFW_KEY_D)) {
-        movementVector -= right * dt * movementSpeed;
-    }
-    
-    if (InputSystem::IsKeyDown(GLFW_KEY_Q)) {
-        movementVector -= up * dt * movementSpeed;
+        movementVector -= right * dt * currentSpeed;
     }
     
     if (InputSystem::IsKeyDown(GLFW_KEY_E)) {
-        movementVector += up * dt * movementSpeed;
+        movementVector += up * dt * currentSpeed;
+    }
+
+    if (InputSystem::IsKeyDown(GLFW_KEY_Q)) {
+        movementVector -= up * dt * currentSpeed;
     }
 
     if (glm::length(movementVector) == 0) {

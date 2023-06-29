@@ -7,6 +7,9 @@ class GameComponentFlyCamera : public GameComponent {
 public:
     INIT_COMPONENT(GameComponentFlyCamera)
 
+    float movementSpeed = 5;
+    float movementSpeedScale = 3;
+
     GameComponentFlyCamera(GameObject* owner) : GameComponent(owner) {
         position = owner->GetPos();
         forward = owner->GetTransform().Forward();
@@ -17,20 +20,21 @@ public:
 private:
     const float maxPitch = 90;
     const float minPitch = -90;
-    const float movementSpeed = 5;
     const float mouseSensitivity = 0.1;
 
-    float lastMouseX;
-    float lastMouseY;
+    float lastMouseX = 0;
+    float lastMouseY = 0;
 
-    float yaw;
-    float pitch;
+    float yaw = 0;
+    float pitch = 0;
 
+    float currentSpeed = 0;
     glm::vec3 position{0};
     glm::vec3 forward{0, 0, 1};
 
+    void UpdateSpeed();
     void UpdateDirection();
-    void UpdatePosition(float dt, glm::vec3 right, glm::vec3 up);
+    void UpdatePosition(float dt);
 };
 
 #endif

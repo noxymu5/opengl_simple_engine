@@ -10,6 +10,7 @@
 
 BEGIN_SERIALIZER(GameComponentGeometry)
 EXPOTR_FIELD(modelName, std::string)
+EXPOTR_FIELD(isVisible, bool)
 END_SERIALIZER(GameComponentGeometry)
 
 void GameComponentGeometry::Init() {

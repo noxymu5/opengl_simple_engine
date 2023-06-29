@@ -27,9 +27,7 @@ void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene,
         YAML::Node rotation = gameObjectContents[keyRotation];
         glm::vec3 angles = rotation.as<glm::vec3>();
 
-        gameObject->GetTransform().RotateX(angles.x);
-        gameObject->GetTransform().RotateY(angles.y);
-        gameObject->GetTransform().RotateZ(angles.z);
+        gameObject->GetTransform().SetEulerAngles(angles);
     }
 
     if (gameObjectContents[keyComponents]) {

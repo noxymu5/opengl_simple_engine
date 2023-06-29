@@ -2,19 +2,27 @@
 objects:
   camera:
     type: Camera
-    pos: [0, 0, -20]
+    pos: [0, 3, 10]
     components:
-        GameComponentFlyCamera: null
-  torus_1:
+        GameComponentFlyCamera:
+          movementSpeedScale: 10
+  monkey:
     type: GameObject
-    pos: [1, 0, 0]
+    rotation: [45, 0, 0]
+    pos: [0, 0, 0]
     components:
       GameComponentGeometry:
-        modelName: "cube.fbx"
-  torus_2:
+        modelName: "monkey.fbx"
+  snowman:
     type: GameObject
-    pos: [-1, 0, 0]
+    pos: [4, 0, 0]
     components:
       GameComponentGeometry:
-        modelName: "torus.glb"
+        modelName: "snowman.fbx"
+  floor:
+    type: GameObject
+    pos: [0, 0, 0]
+    components:
+      GameComponentGeometry:
+        modelName: "plane.fbx"
 ---

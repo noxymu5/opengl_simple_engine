@@ -6,7 +6,7 @@
 class Transform
 {
 private:
-    glm::mat4 matrix{0};
+    glm::mat4 matrix{1};
 public:
     Transform();
     ~Transform();
@@ -24,6 +24,9 @@ public:
     void RotateY(float angle);
     void RotateZ(float angle);
     void RotateX(float angle);
+    void SetRotationX(float angle);
+
+    void SetEulerAngles(glm::vec3 angles);
 
     void SetPosition(glm::vec3 position);
     void SetMatrix(glm::mat4 matr);

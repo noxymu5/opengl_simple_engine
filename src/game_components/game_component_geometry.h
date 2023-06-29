@@ -25,10 +25,9 @@ public:
     bool IsVisible() { return isVisible; }
 
     std::string modelName;
-private:
-
     bool isVisible = true;
 
+private:
     ResourceMesh* mesh;
 
     Texture* texture = nullptr;
