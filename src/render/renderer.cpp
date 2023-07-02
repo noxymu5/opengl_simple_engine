@@ -10,6 +10,7 @@
 
 #include "core/helpers.h"
 #include "game_components/game_component_geometry.h"
+#include "render_context.h"
 
 Renderer::Renderer(GLFWwindow* inWindow) : window(inWindow) {};
 
@@ -36,18 +37,17 @@ void Renderer::Render(Scene* scene) {
 
     std::vector<GameObject*> objects = scene->GetGameObjects();
     
+    RenderContext ctx;
+    ctx.viewProj = viewProj;
+
     for(auto gameObject : objects) {
         GameComponentGeometry* comp = gameObject->TryGet<GameComponentGeometry>();
         if (comp == nullptr || !comp->IsVisible()) {
             continue;
         }
 
-        comp->StartDraw();
-
-        mainModelShader->Use();
-        mainModelShader->BindVertexAttributes();
-
-        mainModelShader->SetUniform("trf", viewProj * gameObject->GetTransform().Get());
+        ctx.model = gameObject->GetTransform().Get();
+        comp->Draw(mainModelShader, ctx);
 
         // mainModelShader->SetUniform("viewProj", viewProj);
         // mainModelShader->SetUniform("ulightColor", glm::vec3(1.0f));
@@ -55,7 +55,6 @@ void Renderer::Render(Scene* scene) {
         // mainModelShader->SetUniform("uViewPos", cam->GetPos());
 
         // mainModelShader->SetUniform("model", gameObject->GetTransform().Get());
-        comp->EndDraw();
     }
 
     glfwSwapBuffers(window);

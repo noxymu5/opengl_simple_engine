@@ -7,10 +7,20 @@
 #include "resource_system/resource/resource.h"
 #include "render/vertex.h"
 
+struct ResourceSubMesh {
+    std::vector<Vertex> verticies;
+    std::vector<unsigned int> indices;
+    std::string materialName;
+
+    bool IsEmpty() { return verticies.empty() && indices.empty(); }
+};
+
 struct ResourceMesh : public Resource {
     std::vector<Vertex> verticies;
     std::vector<unsigned int> indices;
     std::string materialName;
+
+    std::vector<ResourceSubMesh> subMeshes;
 };
 
 #endif

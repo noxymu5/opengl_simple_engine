@@ -1,16 +1,11 @@
 #include "model_loader.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <vector>
 
 #include "core/glm_declarations.h"
 
 #include "dependencies_ext/assimp/math.h"
 
-#include "resource_system/resource/resource_mesh.h"
 #include "resource_system/resource/resource_material.h"
 
 #include "resource_system/resource_system.h"
@@ -40,26 +35,38 @@ void ModelLoader::Load() {
         ResourceMesh* meshResource = new ResourceMesh();
         
         std::string fileName = path.filename().string();
+        LOG("Start loading %s", fileName.c_str())
 
-        const aiNode* currentNode;
+        TraverseNodeHierarchy(meshResource, scene->mRootNode, scene);
 
-        if (fileName == "snowman.fbx") {
-            currentNode = scene->mRootNode->mChildren[3];
-        } else {
-            currentNode = scene->mRootNode->mChildren[0];
+        resSys->RegisterResource(fileName, meshResource);
+    }
+}
+
+void ModelLoader::TraverseNodeHierarchy(ResourceMesh* resourceMesh, const aiNode* node, const aiScene* scene) {
+    const int childrenCount = node->mNumChildren;
+
+    if (childrenCount > 0) {
+        for (int idx = 0; idx < childrenCount; ++idx) {
+            TraverseNodeHierarchy(resourceMesh, node->mChildren[idx], scene);
         }
+    }
 
-        const aiMatrix4x4 trf =currentNode->mTransformation;
-        const aiMesh* mesh = scene->mMeshes[currentNode->mMeshes[0]];
-        
+    const aiMatrix4x4 nodeTransform = node->mTransformation;
+
+    for (int meshIdx = 0; meshIdx < node->mNumMeshes; ++meshIdx) {
+        const aiMesh* mesh = scene->mMeshes[node->mMeshes[meshIdx]];
+
+        ResourceSubMesh subMesh{};
+
         for(int idx = 0; idx < mesh->mNumVertices; ++idx) {
             aiVector3D vert = mesh->mVertices[idx];
             aiVector3D normal = mesh->mNormals[idx];
             aiVector3D uv = mesh->mTextureCoords[0][idx];
 
-            vert = Assimp::Math::TransformVector(trf, vert);
+            vert = Assimp::Math::TransformVector(nodeTransform, vert);
 
-            meshResource->verticies.push_back( {
+            subMesh.verticies.push_back( {
                 glm::vec3(vert.x, vert.y, vert.z),
                 glm::vec3(normal.x, normal.y, normal.z),
                 glm::vec2(uv.x, uv.y)
@@ -70,7 +77,7 @@ void ModelLoader::Load() {
             aiFace& face = mesh->mFaces[idx];
 
             for(int i = 0; i < face.mNumIndices; ++i) {
-                meshResource->indices.push_back(face.mIndices[i]);
+                subMesh.indices.push_back(face.mIndices[i]);
             }
         }
 
@@ -88,10 +95,11 @@ void ModelLoader::Load() {
             resourceMaterial->textureName = textureName.C_Str();
             resSys->RegisterResource(materialName.C_Str(), resourceMaterial);
 
-            meshResource->materialName = materialName.C_Str();
+            subMesh.materialName = materialName.C_Str();
         }
 
-        resSys->RegisterResource(fileName, meshResource);
-        LOG("finished loading %s", fileName.c_str())
+        if (!subMesh.IsEmpty()) {
+            resourceMesh->subMeshes.push_back(subMesh);
+        }
     }
 }

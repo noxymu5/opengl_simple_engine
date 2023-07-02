@@ -6,9 +6,9 @@
 #include "resource_system/resource/resource_mesh.h"
 
 #include "game_components/game_component.h"
-#include "render/buffers.h"
-#include "render/vertex_array_object.h"
-#include "render/texture.h"
+#include "render/mesh/mesh.h"
+#include "render/render_context.h"
+#include "render/shader.h"
 
 class GameComponentGeometry : public GameComponent {
 public:
@@ -18,8 +18,7 @@ public:
 
     virtual void Init() override;
 
-    void StartDraw();
-    void EndDraw();
+    void Draw(Shader* shader, RenderContext ctx);
 
     void SetVisible(bool val) { isVisible = val; }
     bool IsVisible() { return isVisible; }
@@ -28,12 +27,7 @@ public:
     bool isVisible = true;
 
 private:
-    ResourceMesh* mesh;
-
-    Texture* texture = nullptr;
-    VertexArrayObject* vao;
-    VertexBuffer* vertexBuffer;
-    IndexBuffer* indexBuffer;
+    Mesh* mesh;
 };
 
 #endif
