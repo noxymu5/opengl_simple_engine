@@ -65,6 +65,7 @@ void ModelLoader::TraverseNodeHierarchy(ResourceMesh* resourceMesh, const aiNode
             aiVector3D uv = mesh->mTextureCoords[0][idx];
 
             vert = Assimp::Math::TransformVector(nodeTransform, vert);
+            normal = Assimp::Math::TransformVector(nodeTransform, normal);
 
             subMesh.verticies.push_back( {
                 glm::vec3(vert.x, vert.y, vert.z),

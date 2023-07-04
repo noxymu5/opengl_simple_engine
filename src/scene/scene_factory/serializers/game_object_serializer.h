@@ -13,6 +13,7 @@ class GameObjectSerializer {
 public:
     void Deserialize(SceneFactory* sceneFactory, Scene* scene, std::string name, YAML::Node gameObjectContents);
 protected:
+    virtual void ReadContents(GameObject* gameObject, YAML::Node gameObjectContents);
     virtual GameObject* CreateGameObject(Scene* scene, std::string name);
 };
 

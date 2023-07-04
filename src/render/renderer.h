@@ -1,10 +1,10 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "render/buffers.h"
-#include "render/vertex_array_object.h"
+#include <vector>
+
 #include "render/shader.h"
-#include "render/texture.h"
+#include "render/light_data.h"
 
 #include "core/glm_declarations.h"
 
@@ -31,12 +31,9 @@ private:
 
     static void GlErrorCallback(int error, const char* description);
 
-    VertexArrayObject* vaoCube;
-    VertexBuffer* vBufferCube;
-    IndexBuffer* iBuffer;
     Shader* mainModelShader;
-    glm::mat4 cubeTrf;
-    int count;
+
+    std::vector<LightData*> PrepareLightData(Scene* scene);
 };
 
 #endif

@@ -17,7 +17,8 @@ uniform mat4 model;
 void main() {
     gl_Position = viewProj * model * vec4(aPos, 1.0);
     texCoords = aTexCoords;
-    outNormal = mat3(transpose(inverse(model))) * aNormal;
+    // outNormal = mat3(transpose(inverse(model))) * aNormal;
+    outNormal = aNormal;
     FragPos = vec3(model * vec4(aPos, 1.0f));
 }
 
@@ -52,5 +53,6 @@ void main() {
     vec3 specular = specularStrength * spec * ulightColor;
 
     vec4 res = vec4((ambient + diffuse + specular) , 1.0f);
-    FragColor = res * texture(uTexture, texCoords);
+    FragColor = vec4(diffuse, 1.0f) * texture(uTexture, texCoords);
+    // FragColor = vec4(outNormal, 1.0f);
 }

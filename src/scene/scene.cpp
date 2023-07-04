@@ -2,10 +2,8 @@
 
 #include "scene/game_object.h"
 #include "scene/camera.h"
+#include "scene/light.h"
 #include "core/asserts.h"
-#include "game_components/game_component_fly_camera.h"
-#include "game_components/game_component_geometry.h"
-#include "game_components/game_component_change_visibility.h"
 
 void Scene::Update(float dt) {
     for(int i = 0; i < objects.size(); ++i) {
@@ -27,6 +25,16 @@ Camera* Scene::CreateCamera(std::string name) {
     RegisterGameObject(camera);
 
     return camera;
+}
+
+Light* Scene::CreateLight(std::string name) {
+    Light* light = new Light();
+    light->SetName(name);
+    lights.push_back(light);
+
+    RegisterGameObject(light);
+
+    return light;
 }
 
 void Scene::RegisterGameObject(GameObject* gameObject) {

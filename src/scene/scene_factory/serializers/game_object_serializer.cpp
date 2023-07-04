@@ -13,22 +13,7 @@ const char* keyComponents = "components";
 void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene, std::string name, YAML::Node gameObjectContents) {
     GameObject* gameObject = CreateGameObject(scene, name);
 
-    if (gameObjectContents[keyPosition]) {
-        YAML::Node position = gameObjectContents[keyPosition];
-        gameObject->SetPos(position.as<glm::vec3>());
-    }
-
-    if (gameObjectContents[keyScale]) {
-        YAML::Node scale = gameObjectContents[keyScale];
-        gameObject->SetScale(scale.as<glm::vec3>());
-    }
-
-    if (gameObjectContents[keyRotation]) {
-        YAML::Node rotation = gameObjectContents[keyRotation];
-        glm::vec3 angles = rotation.as<glm::vec3>();
-
-        gameObject->GetTransform().SetEulerAngles(angles);
-    }
+    ReadContents(gameObject, gameObjectContents);
 
     if (gameObjectContents[keyComponents]) {
         YAML::Node components = gameObjectContents[keyComponents];
@@ -48,6 +33,25 @@ void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene,
     }
     
     gameObject->Init();
+}
+
+void GameObjectSerializer::ReadContents(GameObject* gameObject, YAML::Node gameObjectContents) {
+    if (gameObjectContents[keyPosition]) {
+        YAML::Node position = gameObjectContents[keyPosition];
+        gameObject->SetPos(position.as<glm::vec3>());
+    }
+
+    if (gameObjectContents[keyScale]) {
+        YAML::Node scale = gameObjectContents[keyScale];
+        gameObject->SetScale(scale.as<glm::vec3>());
+    }
+
+    if (gameObjectContents[keyRotation]) {
+        YAML::Node rotation = gameObjectContents[keyRotation];
+        glm::vec3 angles = rotation.as<glm::vec3>();
+
+        gameObject->GetTransform().SetEulerAngles(angles);
+    }
 }
 
 GameObject* GameObjectSerializer::CreateGameObject(Scene* scene, std::string name) {

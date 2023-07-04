@@ -60,8 +60,14 @@ void SubMesh::Draw(Shader* shader, RenderContext ctx) {
     indexBuffer->Bind();
 
     shader->Use();
+
     shader->BindVertexAttributes();
-    shader->SetUniform("trf", ctx.viewProj * ctx.model);
+
+    shader->SetUniform("viewProj", ctx.viewProj);
+    shader->SetUniform("ulightColor", ctx.lightsData[0]->color);
+    shader->SetUniform("ulightPos", ctx.lightsData[0]->position);
+    shader->SetUniform("uViewPos", ctx.viewPos);
+    shader->SetUniform("model", ctx.model);
 
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 

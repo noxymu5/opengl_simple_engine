@@ -18,7 +18,7 @@ void Renderer::Init() {
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    mainModelShader = new Shader("simple_shader.glsl");
+    mainModelShader = new Shader("simple_lit_shader.glsl");
 }
 
 void Renderer::Terminate() {
@@ -39,6 +39,8 @@ void Renderer::Render(Scene* scene) {
     
     RenderContext ctx;
     ctx.viewProj = viewProj;
+    ctx.viewPos = camPos;
+    ctx.lightsData = PrepareLightData(scene);
 
     for(auto gameObject : objects) {
         GameComponentGeometry* comp = gameObject->TryGet<GameComponentGeometry>();
@@ -65,4 +67,25 @@ void Renderer::Resize(int width, int height) {
     windowWidth = width;
 
     projectionMatr = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
+}
+
+std::vector<LightData*> Renderer::PrepareLightData(Scene* scene) {
+    std::vector<Light*> lights = scene->GetLights();
+
+    std::vector<LightData*> datas;
+
+    for (int idx = 0; idx < lights.size(); ++idx) {
+        LightData* data = new LightData();
+
+        Light* light = lights[idx];
+        data->color = light->color;
+        data->type = light->type;
+        data->position = light->GetPos();
+        data->direction = light->GetTransform().Forward();
+        data->distance = light->distance;
+
+        datas.push_back(data);
+    }
+
+    return datas;
 }

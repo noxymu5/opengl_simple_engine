@@ -10,6 +10,7 @@
 
 #include "serializers/game_object_serializer.h"
 #include "serializers/camera_serializer.h"
+#include "serializers/light_serializer.h"
 
 struct GameObjectCreationData {
     std::string name;
@@ -19,7 +20,8 @@ struct GameObjectCreationData {
 
 std::map<std::string, GameObjectSerializer*> serializerStorage = {
     {"GameObject", new GameObjectSerializer()},
-    {"Camera", new CameraSerializer()}
+    {"Camera", new CameraSerializer()},
+    {"Light", new LightSerializer()}
 };
 
 const std::string keyGameObjects = "objects";

@@ -61,11 +61,11 @@ void Application::Execute() {
 }
 
 void Application::Resize(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, windowWidth, windowHeight);
     windowHeight = height;
     windowWidth = width;
 
-    renderer->Resize(width, height);
+    glViewport(0, 0, windowWidth, windowHeight);
+    renderer->Resize(windowWidth, windowHeight);
 }
 
 void Application::CreateWindow() {

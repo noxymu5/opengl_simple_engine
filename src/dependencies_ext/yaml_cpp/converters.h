@@ -2,6 +2,8 @@
 #include <yaml-cpp/yaml.h>
 #include <glm/vec3.hpp>
 
+#include "scene/light.h"
+
 namespace YAML {
 
     template<>
@@ -22,6 +24,22 @@ namespace YAML {
             rhs.x = node[0].as<float>();
             rhs.y = node[1].as<float>();
             rhs.z = node[2].as<float>();
+            return true;
+        }
+    };
+
+    template<>
+    struct convert<LIGHT_TYPE> {
+        static Node encode(const LIGHT_TYPE& rhs) {
+            Node node;
+            node.push_back((int)rhs);
+
+            return node;
+        }
+
+        static bool decode(const Node& node, LIGHT_TYPE& rhs) {
+            rhs = (LIGHT_TYPE)node.as<int>();
+            
             return true;
         }
     };

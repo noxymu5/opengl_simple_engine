@@ -6,4 +6,5 @@
 void Application::RegisterComponents(SceneFactory* sceneFactory) {
     REGISTER_COMPONENT(GameComponentGeometry, sceneFactory)
     REGISTER_COMPONENT(GameComponentFlyCamera, sceneFactory)
+    REGISTER_COMPONENT(GameComponentCircleMovement, sceneFactory)
 }
