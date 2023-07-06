@@ -10,6 +10,7 @@
 
 #include "application/application_arguments.h"
 #include "resource_system/resource_system.h"
+#include "render/materials/material_system.h"
 #include "input/input_system.h"
 #include "render/renderer.h"
 #include "scene/scene_factory/scene_factory.h"
@@ -30,12 +31,16 @@ void Application::Init(ApplicationArguments args) {
     sceneFactory = new SceneFactory();
     RegisterComponents(sceneFactory);
 
-    resSystem = new ResourceSystem(args.GetArgument(ArgumentType::RESOURCES_ROOT));
     inputSystem = InputSystem::Create(window);
-    currentScene = sceneFactory->CreateScene(args);
+
+    resSystem = new ResourceSystem(args.GetArgument(ArgumentType::RESOURCES_ROOT));
+    matSystem = new MaterialSystem(resSystem);
+
     renderer = new Renderer(window);
     renderer->Resize(windowWidth, windowHeight);
     renderer->Init();
+
+    currentScene = sceneFactory->CreateScene(args);
 
     glewInit();
 }

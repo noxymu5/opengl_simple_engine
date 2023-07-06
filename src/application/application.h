@@ -8,6 +8,7 @@ class ApplicationArguments;
 class ResourceSystem;
 class InputSystem;
 class Renderer;
+class MaterialSystem;
 class Scene;
 class SceneFactory;
 
@@ -27,6 +28,7 @@ private:
     ResourceSystem* resSystem;
     InputSystem* inputSystem;
     Renderer* renderer;
+    MaterialSystem* matSystem;
     Scene* currentScene;
 
     GLFWwindow* window;

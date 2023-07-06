@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.buran": "yaml",
+        "*.mat": "yaml",
         "array": "cpp",
         "atomic": "cpp",
         "*.tcc": "cpp",

@@ -3,10 +3,7 @@ objects:
   light:
     type: Light
     pos: [0, 5, 0]
-    scale: [0.25, 0.25, 0.25]
     light_type: 1
-    components:
-
   camera:
     type: Camera
     pos: [0, 3, 10]
@@ -19,6 +16,7 @@ objects:
     components:
       GameComponentGeometry:
         modelName: "monkey.fbx"
+        mainMaterialOverride: "earth.mat"
   snowman:
     type: GameObject
     pos: [4, 0, 0]

@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "core/asserts.h"
+#include "core/logging.h"
 #include "resource_system/loader/shader_loader.h"
 
 static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToLayoutMap = {
@@ -14,12 +15,9 @@ static const std::unordered_map<std::string, VertexBufferLayoutTypeInfo> typeToL
     {"vec3", {GL_FLOAT, 3, sizeof(float) * 3}}
 };
 
-Shader::Shader(const std::string &path) {
-    ShaderLoader loader(path);
-    ResourceShader resource = loader.Get();
-
-    CreateAttributreLayout(resource);
-    CompileShaderProgram(resource.shaderSources);
+Shader::Shader(ResourceShader* resource) {
+    CreateAttributreLayout(*resource);
+    CompileShaderProgram(resource->shaderSources);
 }
 
 void Shader::Use() {
@@ -95,7 +93,7 @@ void Shader::CompileShaderProgram(std::string* shaderSources) {
     {
         char infoLog[512];
         glGetProgramInfoLog(shaderProgramId, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        LOG("Shader program compilation failed:\n %s", infoLog)
     }
 
     for(int idx = 0; idx < (int)ShaderType::Count; ++idx) {
@@ -133,7 +131,7 @@ unsigned int Shader::CreateAndCompileShader(ShaderType shaderType, const char* s
         glGetShaderInfoLog(shaderId, 512, NULL, infoLog);
         
         const char* shaderTypeString = glShaderType == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT";
-        std::cout << "ERROR::SHADER::" << shaderTypeString << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+        LOG("Shader %s compilation failed:\n %s", shaderTypeString, infoLog)
     };
 
     return shaderId;

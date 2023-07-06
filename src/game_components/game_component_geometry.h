@@ -8,7 +8,6 @@
 #include "game_components/game_component.h"
 #include "render/mesh/mesh.h"
 #include "render/render_context.h"
-#include "render/shader.h"
 
 class GameComponentGeometry : public GameComponent {
 public:
@@ -18,16 +17,18 @@ public:
 
     virtual void Init() override;
 
-    void Draw(Shader* shader, RenderContext ctx);
+    void Draw(RenderContext ctx);
 
     void SetVisible(bool val) { isVisible = val; }
     bool IsVisible() { return isVisible; }
 
     std::string modelName;
+    std::string mainMaterialOverride;
     bool isVisible = true;
 
 private:
     Mesh* mesh;
+    MaterialOverride materialOverride;
 };
 
 #endif

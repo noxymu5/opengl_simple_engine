@@ -17,7 +17,7 @@ struct VertexBufferLayoutTypeInfo {
 
 class Shader {
 public:
-    Shader(const std::string &path);
+    Shader(ResourceShader* resource);
 
     unsigned int GetProgramId() const { return shaderProgramId; }
     void Use();

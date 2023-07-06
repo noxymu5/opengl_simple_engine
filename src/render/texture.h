@@ -6,7 +6,7 @@
 class Texture
 {
 public:
-    Texture(ResourceTexture res, unsigned int inTextureUnit = 0);
+    Texture(ResourceTexture* res, unsigned int inTextureUnit = 0);
     void Use();
     void Deactivate();
 

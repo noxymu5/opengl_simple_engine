@@ -16,6 +16,8 @@ struct ResourceSubMesh {
 };
 
 struct ResourceMesh : public Resource {
+    INIT_RESOURCE(ResourceMesh)
+
     std::vector<Vertex> verticies;
     std::vector<unsigned int> indices;
     std::string materialName;

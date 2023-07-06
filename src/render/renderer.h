@@ -3,9 +3,7 @@
 
 #include <vector>
 
-#include "render/shader.h"
 #include "render/light_data.h"
-
 #include "core/glm_declarations.h"
 
 class GLFWwindow;
@@ -29,11 +27,8 @@ private:
     
     glm::mat4 projectionMatr{};
 
-    static void GlErrorCallback(int error, const char* description);
-
-    Shader* mainModelShader;
-
     std::vector<LightData*> PrepareLightData(Scene* scene);
+    static void GlErrorCallback(int error, const char* description);
 };
 
 #endif

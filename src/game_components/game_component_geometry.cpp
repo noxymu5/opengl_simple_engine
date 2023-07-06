@@ -10,13 +10,16 @@
 
 BEGIN_SERIALIZER(GameComponentGeometry)
 EXPOTR_FIELD(modelName, std::string)
+EXPOTR_FIELD(mainMaterialOverride, std::string)
 EXPOTR_FIELD(isVisible, bool)
 END_SERIALIZER(GameComponentGeometry)
 
 void GameComponentGeometry::Init() {
-    mesh = new Mesh(modelName);
+    materialOverride.mainMaterialName = mainMaterialOverride;
+
+    mesh = new Mesh(modelName, materialOverride);
 }
 
-void GameComponentGeometry::Draw(Shader* shader, RenderContext ctx) {
-    mesh->Draw(shader, ctx);
+void GameComponentGeometry::Draw(RenderContext ctx) {
+    mesh->Draw(ctx);
 }

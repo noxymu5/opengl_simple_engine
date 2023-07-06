@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iterator>
 
 #include "resource_system/resource/resource.h"
 #include "core/asserts.h"
@@ -16,24 +17,40 @@ public:
     static ResourceSystem* Get();
 
     std::string GetRoot();
-    std::string PathToTexture(std::string path);
-    std::string PathToShader(std::string path);
-    std::string PathToModel(std::string path);
 
-    void RegisterResource(std::string name, Resource* resource);
+    template<class ResT>
+    void RegisterResource(std::string name, ResT* resource) {
+        resourcesMap[ResT::Name()][name] = resource;
+    }
 
     template<class ResT>
     ResT* GetResource(std::string resName) {
-        auto it = resources.find(resName);
-        ASSERT(it != resources.end(), "Can not find resource by name %s", resName.c_str())
+        auto resourceMapIt = resourcesMap.find(ResT::Name());
+        ASSERT(resourceMapIt != resourcesMap.end(), "Unknown resource type %s", ResT::Name().c_str())
+
+        auto it = resourceMapIt->second.find(resName);
+        ASSERT(it != resourceMapIt->second.end(), "Can not find resource by name %s", resName.c_str())
         
         return static_cast<ResT*>(it->second);
+    }
+
+    template<class ResT>
+    std::map<std::string, ResT*> GetAllResourcesOfType() {
+        auto resourceMapIt = resourcesMap.find(ResT::Name());
+        ASSERT(resourceMapIt != resourcesMap.end(), "Unknown resource type %s", ResT::Name().c_str())
+
+        std::map<std::string, ResT*> result;
+        for(auto resIt = resourceMapIt->second.begin(); resIt != resourceMapIt->second.end(); ++resIt) {
+            result[resIt->first] = static_cast<ResT*>(resIt->second);
+        }
+
+        return result;
     }
 
 private:
     std::string rootPath;
     std::vector<ResourceLoader*> loaders;
-    std::map<std::string, Resource*> resources;
+    std::map<std::string, std::map<std::string, Resource*>> resourcesMap;
 };
 
 #endif

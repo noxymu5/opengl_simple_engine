@@ -5,18 +5,38 @@
 #include "resource_system/resource_system.h"
 #include "core/asserts.h"
 
+static std::string shaderRoot = "\\shaders\\";
+
 static std::vector<std::string> attributes {
     "vec2",
     "vec3"
 };
 
-ShaderLoader::ShaderLoader(std::string path) {
-    std::string resultPath = ResourceSystem::Get()->PathToShader(path);
-    ReadFile(resultPath);
-    ParseFile();
+void ShaderLoader::Load() {
+    std::string shadersFolderPath = resSys->GetRoot() + shaderRoot;
+
+    LOG("Load shaders from folder %s", shadersFolderPath.c_str())
+
+    std::filesystem::directory_entry entry{shadersFolderPath};
+    ASSERT(entry.exists(), "Directory %s does not exist", shadersFolderPath.c_str())
+    ASSERT(entry.is_directory(), "Path %s does not lead to directory", shadersFolderPath.c_str())
+
+    std::vector<std::filesystem::path> shadersPath;
+    CollectItemsPath(shadersPath, shadersFolderPath);
+
+    for(std::filesystem::path path : shadersPath) {
+        std::string pathAsString = path.string();
+        std::string fileName = path.filename().string();
+
+        std::stringstream stream = ReadFile(pathAsString);
+        resSys->RegisterResource<ResourceShader>(fileName, ParseFile(stream));
+        LOG("finished loading %s", fileName.c_str())
+    }
 }
 
-void ShaderLoader::ReadFile(std::string path) {
+std::stringstream ShaderLoader::ReadFile(std::string path) {
+    std::stringstream shaderSourceStream;
+
     std::ifstream fileStream;
     fileStream.exceptions(std::ifstream::failbit | std::ifstream::badbit | std::ifstream::eofbit);
 
@@ -41,14 +61,18 @@ void ShaderLoader::ReadFile(std::string path) {
     std::string line;
 
     fileStream.close();
+
+    return shaderSourceStream;
 }
 
-void ShaderLoader::ParseFile() {
+ResourceShader* ShaderLoader::ParseFile(std::stringstream& shaderSourceStream) {
+    ResourceShader* resource = new ResourceShader();
+
     ShaderType type;
     std::string line;
     bool isAttributeSection = false;
 
-    resource.shaderSources = new std::string[(int)(ShaderType::Count)];
+    resource->shaderSources = new std::string[(int)(ShaderType::Count)];
     while (getline(shaderSourceStream, line)) {
         if (line.find("#type") != std::string::npos) {
             if (line.find("vertex") != std::string::npos) {
@@ -70,13 +94,13 @@ void ShaderLoader::ParseFile() {
             continue;
         }
 
-        resource.shaderSources[(int)type].append(line + "\n");
+        resource->shaderSources[(int)type].append(line + "\n");
 
         if (isAttributeSection) {
             bool isAttributeFound = false;
             for (auto& attribute: attributes) {
                 if (line.find(attribute) != std::string::npos){
-                    resource.attributeTypes.push_back(attribute);
+                    resource->attributeTypes.push_back(attribute);
 
                     isAttributeFound = true;
                     break;
@@ -86,4 +110,6 @@ void ShaderLoader::ParseFile() {
             ASSERT(isAttributeFound, "Unkonwn attribute type in line %s", line.c_str())
         }
     }
+
+    return resource;
 }

@@ -5,32 +5,34 @@
 #include "resource_system/resource/resource_material.h"
 #include "resource_system/resource/resource_texture.h"
 #include "resource_system/resource_system.h"
+#include "render/materials/material_instance.h"
+#include "render/materials/material_system.h"
 
-Mesh::Mesh(std::string modelName) {
+Mesh::Mesh(std::string modelName, MaterialOverride& materialOverride) {
     ResourceSystem* resSys = ResourceSystem::Get();
 
     ResourceMesh* mesh = resSys->GetResource<ResourceMesh>(modelName);
 
     for (int subMeshIdx = 0; subMeshIdx < mesh->subMeshes.size(); ++subMeshIdx) {
-        SubMesh* subMesh = new SubMesh(&mesh->subMeshes[subMeshIdx]);
+        SubMesh* subMesh = new SubMesh(&mesh->subMeshes[subMeshIdx], materialOverride.mainMaterialName);
         subMeshes.push_back(subMesh);
     }
 }
 
-void Mesh::Draw(Shader* shader, RenderContext ctx) {
+void Mesh::Draw( RenderContext ctx) {
     for (int idx = 0; idx < subMeshes.size(); ++idx) {
-        subMeshes[idx]->Draw(shader, ctx);
+        subMeshes[idx]->Draw(ctx);
     }
 }
 
-SubMesh::SubMesh(ResourceSubMesh* resource) {
+SubMesh::SubMesh(ResourceSubMesh* resource, std::string& overridenMaterialName) {
     vao = new VertexArrayObject();
     ResourceSystem* resSys = ResourceSystem::Get();
 
-    ResourceMaterial* mat = resSys->GetResource<ResourceMaterial>(resource->materialName);
-    if (!mat->textureName.empty()) {
-        ResourceTexture* resTexture = resSys->GetResource<ResourceTexture>(mat->textureName);
-        texture = new Texture(*resTexture);    
+    if (overridenMaterialName.empty()) {
+        material = MaterialSystem::Get()->GetMaterialInstance(resource->materialName);
+    } else {
+        material = MaterialSystem::Get()->GetMaterialInstance(overridenMaterialName);
     }
 
     vao->Bind();
@@ -49,31 +51,17 @@ SubMesh::SubMesh(ResourceSubMesh* resource) {
     indexBuffer->UnBind();
 }
 
-void SubMesh::Draw(Shader* shader, RenderContext ctx) {
+void SubMesh::Draw(RenderContext ctx) {
     vao->Bind();
-    
-    if (texture != nullptr) {
-        texture->Use();
-    }
 
     vertexBuffer->Bind();
     indexBuffer->Bind();
 
-    shader->Use();
-
-    shader->BindVertexAttributes();
-
-    shader->SetUniform("viewProj", ctx.viewProj);
-    shader->SetUniform("ulightColor", ctx.lightsData[0]->color);
-    shader->SetUniform("ulightPos", ctx.lightsData[0]->position);
-    shader->SetUniform("uViewPos", ctx.viewPos);
-    shader->SetUniform("model", ctx.model);
+    material->Activate(ctx);
 
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 
-    if (texture != nullptr) {
-        texture->Deactivate();
-    }
+    material->Deactivate();
 
     vertexBuffer->UnBind();
     indexBuffer->UnBind();
