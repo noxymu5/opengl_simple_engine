@@ -11,8 +11,9 @@ public:
     void Deactivate();
 
 private:
-    Material* material;
-    Texture* texture;
+    Material* material = nullptr;
+    Texture* texture = nullptr;
+    bool isLit = true;
 };
 
 #endif

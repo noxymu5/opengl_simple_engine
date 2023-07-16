@@ -23,9 +23,13 @@ public:
     glm::vec3 GetPos() { return transform.GetPosition(); }
     
     void SetPos(glm::vec3 pos) { transform.SetPosition(pos); }
-    void SetScale(glm::vec3 pos) { transform.Scale(pos); }
+    void SetScale(glm::vec3 scale) { transform.Scale(scale); }
+    void SetScale(float scale) { SetScale(glm::vec3(scale)); }
 
     void SetName(std::string newName) { name = newName; }
+
+    bool IsEnabled() { return isEnabled; }
+    void SetEnabled(bool value) { isEnabled = value; }
 
     template<class CompT>
     CompT* AddComponent() {
@@ -48,6 +52,7 @@ public:
     CompT* Get() {
         CompT* comp = TryGet<CompT>();
         ASSERT(comp != nullptr, "Can not get component %s", CompT::Name().c_str())
+        return comp;
     }
 
 protected:
@@ -55,6 +60,7 @@ protected:
     Transform transform;
 
 private:
+    bool isEnabled = true;
     std::string name;
 
     std::map<std::string, GameComponent*> components;

@@ -10,15 +10,15 @@ Transform::~Transform() {
 }
 
 glm::vec3 Transform::Up() {
-    return glm::vec3(matrix[1]);
+    return glm::normalize(glm::vec3(matrix[1]));
 }
 
 glm::vec3 Transform::Right() {
-    return glm::vec3(matrix[0]);
+    return glm::normalize(glm::vec3(matrix[0]));
 }
 
 glm::vec3 Transform::Forward() {
-    return glm::vec3(matrix[2]);
+    return glm::normalize(glm::vec3(matrix[2]));
 }
 
 void Transform::Translate(glm::vec3 translation) {

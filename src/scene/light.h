@@ -6,15 +6,17 @@
 #include "scene/game_object.h"
 
 enum class LIGHT_TYPE {
+    POINT,
     DIRECTIONAL,
-    POINT
+    SPOT_LIGHT
 };
 
 class Light : public GameObject {
 public:
     LIGHT_TYPE type { LIGHT_TYPE::POINT };
     glm::vec3 color {1.0f};
-    float distance = 3;
+    float cutoffAngle;
+    float distance = 20;
 };
 
 #endif

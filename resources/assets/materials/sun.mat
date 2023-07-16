@@ -1,0 +1,4 @@
+properties:
+    type: 0
+    textureName: sun.jpg
+    isLit: false

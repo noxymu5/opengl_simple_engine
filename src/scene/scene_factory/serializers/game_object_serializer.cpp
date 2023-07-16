@@ -9,6 +9,7 @@ const char* keyPosition = "pos";
 const char* keyScale = "scale";
 const char* keyRotation = "rotation";
 const char* keyComponents = "components";
+const char* keyIsEnabled = "isEnabled";
 
 void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene, std::string name, YAML::Node gameObjectContents) {
     GameObject* gameObject = CreateGameObject(scene, name);
@@ -43,7 +44,11 @@ void GameObjectSerializer::ReadContents(GameObject* gameObject, YAML::Node gameO
 
     if (gameObjectContents[keyScale]) {
         YAML::Node scale = gameObjectContents[keyScale];
-        gameObject->SetScale(scale.as<glm::vec3>());
+        if (scale.IsSequence()) {
+            gameObject->SetScale(scale.as<glm::vec3>());
+        } else {
+            gameObject->SetScale(scale.as<float>());
+        }
     }
 
     if (gameObjectContents[keyRotation]) {
@@ -51,6 +56,13 @@ void GameObjectSerializer::ReadContents(GameObject* gameObject, YAML::Node gameO
         glm::vec3 angles = rotation.as<glm::vec3>();
 
         gameObject->GetTransform().SetEulerAngles(angles);
+    }
+
+    if (gameObjectContents[keyIsEnabled]) {
+        YAML::Node isEnabledYaml = gameObjectContents[keyIsEnabled];
+        bool isEnabled = isEnabledYaml.as<bool>();
+
+        gameObject->SetEnabled(isEnabled);
     }
 }
 

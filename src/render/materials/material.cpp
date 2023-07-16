@@ -18,6 +18,6 @@ void Material::Deactivate() {
 }
 
 void Material::SetUniforms(RenderContext ctx) {
-    shader->SetUniform("viewProj", ctx.viewProj);
-    shader->SetUniform("model", ctx.model);
+    shader->SetUniform("uViewProjMatrix", ctx.viewProj);
+    shader->SetUniform("uModelMatrix", ctx.model);
 }

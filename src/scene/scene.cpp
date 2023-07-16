@@ -7,7 +7,9 @@
 
 void Scene::Update(float dt) {
     for(int i = 0; i < objects.size(); ++i) {
-        objects[i]->Update(dt);
+        if (objects[i]->IsEnabled()) {
+            objects[i]->Update(dt);
+        }
     }
 }
 
@@ -35,6 +37,18 @@ Light* Scene::CreateLight(std::string name) {
     RegisterGameObject(light);
 
     return light;
+}
+
+std::vector<Light*> Scene::GetLights() {
+    std::vector<Light*> enabledLigths;
+
+    for(int i = 0; i < lights.size(); ++i) {
+        if (lights[i]->IsEnabled()) {
+            enabledLigths.push_back(lights[i]);
+        }
+    }
+
+    return enabledLigths;
 }
 
 void Scene::RegisterGameObject(GameObject* gameObject) {

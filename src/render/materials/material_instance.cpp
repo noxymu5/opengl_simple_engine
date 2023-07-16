@@ -4,15 +4,24 @@
 #include "resource_system/resource/resource_texture.h"
 
 MaterialInstance::MaterialInstance(ResourceMaterial* res, Material* mat) : material(mat) {
-    texture = new Texture(ResourceSystem::Get()->GetResource<ResourceTexture>(res->textureName), 0);
+    if (!res->textureName.empty()) {
+        texture = new Texture(ResourceSystem::Get()->GetResource<ResourceTexture>(res->textureName), 0);
+    }
+
+    isLit = res->isLit;
 }
 
 void MaterialInstance::Activate(RenderContext ctx) {
-    texture->Use();
+    if (texture != nullptr) {
+        texture->Use();
+    }
     material->Activate(ctx);
+    material->SetIsLit(isLit);
 }
 
 void MaterialInstance::Deactivate() {
-    texture->Deactivate();
+    if (texture != nullptr) {
+        texture->Deactivate();
+    }
     material->Deactivate();
 }

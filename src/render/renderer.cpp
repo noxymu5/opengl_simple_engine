@@ -23,7 +23,7 @@ void Renderer::Terminate() {
 }
 
 void Renderer::Render(Scene* scene) {
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     Camera* cam = scene->GetCamera();
@@ -37,9 +37,13 @@ void Renderer::Render(Scene* scene) {
     RenderContext ctx;
     ctx.viewProj = viewProj;
     ctx.viewPos = camPos;
-    ctx.lightsData = PrepareLightData(scene);
+    ctx.lightData = PrepareLightData(scene);
 
     for(auto gameObject : objects) {
+        if (!gameObject->IsEnabled()) {
+            continue;
+        }
+
         GameComponentGeometry* comp = gameObject->TryGet<GameComponentGeometry>();
         if (comp == nullptr || !comp->IsVisible()) {
             continue;
@@ -56,26 +60,59 @@ void Renderer::Resize(int width, int height) {
     windowHeight = height;
     windowWidth = width;
 
-    projectionMatr = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f);
+    projectionMatr = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 500.0f);
 }
 
-std::vector<LightData*> Renderer::PrepareLightData(Scene* scene) {
+SceneLightsData* Renderer::PrepareLightData(Scene* scene) {
     std::vector<Light*> lights = scene->GetLights();
 
-    std::vector<LightData*> datas;
-
+    SceneLightsData* lightData = new SceneLightsData();
     for (int idx = 0; idx < lights.size(); ++idx) {
-        LightData* data = new LightData();
 
         Light* light = lights[idx];
-        data->color = light->color;
-        data->type = light->type;
-        data->position = light->GetPos();
-        data->direction = light->GetTransform().Forward();
-        data->distance = light->distance;
 
-        datas.push_back(data);
+        switch (light->type)
+        {
+        case LIGHT_TYPE::POINT:
+            {
+                PointLightData* pointLightData = new PointLightData();
+                pointLightData->color = light->color;
+                pointLightData->distance = light->distance;
+                pointLightData->position = light->GetPos();
+
+                lightData->pointLights.push_back(pointLightData);
+            }
+            break;
+        case LIGHT_TYPE::DIRECTIONAL:
+            if (lightData->directionalLight != nullptr) {
+                break;
+            }
+
+            {
+                DirectionalLightData* directionalLightData = new DirectionalLightData();
+                directionalLightData->color = light->color;
+                directionalLightData->direction = light->GetTransform().Forward();
+
+                lightData->directionalLight = directionalLightData;
+            }
+            break;
+        case LIGHT_TYPE::SPOT_LIGHT:
+            {
+                SpotLightData* spotLightData = new SpotLightData();
+                spotLightData->color = light->color;
+                spotLightData->direction = light->GetTransform().Forward();
+                spotLightData->cutoffAngle = light->cutoffAngle;
+                spotLightData->position = light->GetPos();
+                spotLightData->radius = light->distance;
+
+                lightData->spotLights.push_back(spotLightData);
+            }
+            break;
+        default:
+            ASSERT_FAIL("Unknown light type")
+            break;
+        }
     }
 
-    return datas;
+    return lightData;
 }

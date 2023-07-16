@@ -27,7 +27,7 @@ private:
     
     glm::mat4 projectionMatr{};
 
-    std::vector<LightData*> PrepareLightData(Scene* scene);
+    SceneLightsData* PrepareLightData(Scene* scene);
     static void GlErrorCallback(int error, const char* description);
 };
 

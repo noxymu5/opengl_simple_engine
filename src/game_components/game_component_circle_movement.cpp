@@ -5,6 +5,8 @@
 
 #include "serializers/game_component_serializer.h"
 
+#include "core/logging.h"
+
 BEGIN_SERIALIZER(GameComponentCircleMovement)
 EXPOTR_FIELD(rotationSpeed, float)
 EXPOTR_FIELD(height, float)
@@ -14,6 +16,6 @@ END_SERIALIZER(GameComponentCircleMovement)
 void GameComponentCircleMovement::Update(float dt) {
     angle += rotationSpeed * dt;
 
-    glm::vec3 position(sin(angle) * radius, height, cos(angle) * radius);
+    glm::vec3 position(sin(glm::radians(angle)) * radius, height, cos(glm::radians(angle)) * radius);
     owner->SetPos(position);
 }

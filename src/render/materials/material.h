@@ -15,6 +15,7 @@ public:
     void LoadShader(ResourceSystem* resSys);
     virtual void Activate(RenderContext ctx);
     virtual void Deactivate();
+    void SetIsLit(bool isLit) { shader->SetUniform("uIsLit", isLit); }
 
 protected:
     Shader* shader;

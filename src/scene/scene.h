@@ -19,7 +19,7 @@ public:
     Light* CreateLight(std::string name);
     Camera* GetCamera() { return camera; }
     
-    std::vector<Light*>& GetLights() { return lights; }
+    std::vector<Light*> GetLights();
     std::vector<GameObject*>& GetGameObjects() { return objects; }
 
 private:

@@ -11,6 +11,7 @@ struct ResourceMaterial : public Resource {
 
     MaterialType type {MaterialType::SIMPLE};
     std::string textureName;
+    bool isLit = true;
 };
 
 

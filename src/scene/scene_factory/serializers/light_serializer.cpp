@@ -9,6 +9,7 @@
 const char* keyType = "light_type";
 const char* keyColor = "color";
 const char* keyDistance = "distance";
+const char* keyCutoffAngle = "cutoffAngle";
 
 void LightSerializer::ReadContents(GameObject* gameObject, YAML::Node gameObjectContents){
     GameObjectSerializer::ReadContents(gameObject, gameObjectContents);
@@ -29,6 +30,11 @@ void LightSerializer::ReadContents(GameObject* gameObject, YAML::Node gameObject
     if (gameObjectContents[keyDistance]) {
         YAML::Node distance = gameObjectContents[keyDistance];
         light->distance = distance.as<float>();
+    }
+
+    if (gameObjectContents[keyCutoffAngle]) {
+        YAML::Node angle = gameObjectContents[keyCutoffAngle];
+        light->cutoffAngle = angle.as<float>();
     }
 }
 

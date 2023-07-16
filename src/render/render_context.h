@@ -13,7 +13,7 @@ struct RenderContext {
     glm::mat4 viewProj;
     glm::mat4 model;
 
-    std::vector<LightData*> lightsData;
+    SceneLightsData* lightData;
 };
 
 #endif

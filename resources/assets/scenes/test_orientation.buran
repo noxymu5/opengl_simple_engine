@@ -2,14 +2,23 @@
 objects:
   light:
     type: Light
-    pos: [0, 5, 0]
+    light_type: 2
+    pos: [-2, 4, -3]
+    rotation: [45, 45, 0]
+    cutoffAngle: 35
+    distance: 50
+  light1:
+    type: Light
+    isEnabled: false
     light_type: 1
+    pos: [0, 3, 0]
+    rotation: [45, 0, 0]
   camera:
     type: Camera
-    pos: [0, 3, 10]
+    pos: [0, 1, 0]
     components:
-        GameComponentFlyCamera:
-          movementSpeedScale: 10
+      GameComponentFlyCamera:
+        movementSpeedScale: 10
   monkey:
     type: GameObject
     pos: [0, 0, 3]

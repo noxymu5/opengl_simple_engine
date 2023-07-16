@@ -36,6 +36,10 @@ void MaterialLoader::Load() {
             resource->textureName = materialProperties["textureName"].as<std::string>();
         }
 
+        if (materialProperties["isLit"]) {
+            resource->isLit = materialProperties["isLit"].as<bool>();
+        }
+
         resSys->RegisterResource<ResourceMaterial>(fileName, resource);
         LOG("Finished loading %s", fileName.c_str())
     }
