@@ -15,6 +15,10 @@ Renderer::Renderer(GLFWwindow* inWindow) : window(inWindow) {};
 
 void Renderer::Init() {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
@@ -24,7 +28,7 @@ void Renderer::Terminate() {
 
 void Renderer::Render(Scene* scene) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     Camera* cam = scene->GetCamera();
     Transform camTrf = cam->GetTransform();

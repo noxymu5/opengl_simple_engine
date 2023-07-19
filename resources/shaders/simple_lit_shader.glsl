@@ -158,8 +158,7 @@ vec4 CalculateSpotLights(vec4 sampledFragment) {
     return result;
 }
 
-vec4 CaclulateLighting() {
-    vec4 fragment = texture(matData.diffuse, vsOutput.texCoords);
+vec4 CaclulateLighting(vec4 fragment) {
     vec4 result = fragment * AMBIENT_STRENGTH;
     
     result += CalculateDirectional(fragment) + CalculatePointLights(fragment) + CalculateSpotLights(fragment);
@@ -168,11 +167,16 @@ vec4 CaclulateLighting() {
 }
 
 void main() {
+    vec4 fragment = texture(matData.diffuse, vsOutput.texCoords);
+    if (fragment.a < 0.1) {
+        discard;
+    }
+
     if (uIsLit) {
-        FragColor = CaclulateLighting();
+        FragColor = CaclulateLighting(fragment);
         return;
     } else {
-        FragColor = texture(matData.diffuse, vsOutput.texCoords);
+        FragColor = fragment;
         return;
     }
 }
