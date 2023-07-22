@@ -9,7 +9,7 @@
 #include "resource_system/resource/resource_mesh.h"
 
 #include "render/buffers.h"
-#include "render/vertex_array_object.h"
+#include "render/primitives/vertex_array_object.h"
 #include "render/materials/material_instance.h"
 
 #include "render/render_context.h"

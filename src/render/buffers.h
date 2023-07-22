@@ -1,8 +1,10 @@
 #ifndef BUFFERS
 #define BUFFERS
 
-class VertexBuffer
-{
+class Texture;
+class RenderBufferObject;
+
+class VertexBuffer {
 private:
     unsigned int id;
 
@@ -15,8 +17,7 @@ public:
     void UnBind() const;
 };
 
-class IndexBuffer
-{
+class IndexBuffer {
 private:
     unsigned int id;
     unsigned int count;
@@ -30,5 +31,36 @@ public:
     unsigned int GetCount();
 };
 
+enum class FrameBufferBindType {
+    READ,
+    WRITE,
+    READ_AND_WRITE
+};
+
+enum class FrameBufferAttachmentType {
+    COLOR,
+    DEPTH,
+    STENCIL,
+    DEPTH_STENCIL
+};
+
+class FrameBuffer {
+public:
+    FrameBuffer(FrameBufferBindType bindType = FrameBufferBindType::READ_AND_WRITE);
+    ~FrameBuffer();
+
+    void Attach(Texture* tex, FrameBufferAttachmentType attachmentType);
+    void Attach(RenderBufferObject* tex, FrameBufferAttachmentType attachmentType);
+
+    void Bind();
+    void Unbind();
+
+    void Validate();
+private:
+    unsigned int id;
+    unsigned int bindType;
+
+    unsigned int GetGlAttachmentType(FrameBufferAttachmentType attachmentType);
+};
 
 #endif

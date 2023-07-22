@@ -11,11 +11,15 @@
 #include "game_components/game_component_geometry.h"
 #include "render_context.h"
 
+#include "render/buffers.h"
+#include "render/primitives/render_buffer_object.h"
+
+#include "render/texture.h"
+
 Renderer::Renderer(GLFWwindow* inWindow) : window(inWindow) {};
 
 void Renderer::Init() {
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_STENCIL_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
@@ -27,8 +31,11 @@ void Renderer::Terminate() {
 }
 
 void Renderer::Render(Scene* scene) {
+    frameBuffer->Bind();
+    glEnable(GL_DEPTH_TEST);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     Camera* cam = scene->GetCamera();
     Transform camTrf = cam->GetTransform();
@@ -37,7 +44,7 @@ void Renderer::Render(Scene* scene) {
     glm::mat4 viewProj = projectionMatr * cam->GetViewMatrix();
 
     std::vector<GameObject*> objects = scene->GetGameObjects();
-    
+
     RenderContext ctx;
     ctx.viewProj = viewProj;
     ctx.viewPos = camPos;
@@ -57,6 +64,15 @@ void Renderer::Render(Scene* scene) {
         comp->Draw(ctx);
     }
 
+    frameBuffer->Unbind();
+
+    glDisable(GL_DEPTH_TEST);
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    dumper.DumpToScreen(frameBufferOutput);
+
     glfwSwapBuffers(window);
 }
 
@@ -65,6 +81,27 @@ void Renderer::Resize(int width, int height) {
     windowWidth = width;
 
     projectionMatr = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 500.0f);
+
+    if (rbo != nullptr) {
+        delete(rbo);
+    }
+
+    if (frameBufferOutput != nullptr) {
+        delete(frameBufferOutput);
+    }
+
+    rbo = new RenderBufferObject(windowWidth, windowHeight);
+    frameBufferOutput = new Texture(windowWidth, windowHeight, nullptr);
+
+    frameBuffer = new FrameBuffer(FrameBufferBindType::READ_AND_WRITE);
+    frameBuffer->Bind();
+    
+    frameBuffer->Attach(frameBufferOutput, FrameBufferAttachmentType::COLOR);
+    frameBuffer->Attach(rbo, FrameBufferAttachmentType::DEPTH_STENCIL);
+
+    frameBuffer->Validate();
+
+    frameBuffer->Unbind();
 }
 
 SceneLightsData* Renderer::PrepareLightData(Scene* scene) {

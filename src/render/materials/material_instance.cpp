@@ -5,7 +5,8 @@
 
 MaterialInstance::MaterialInstance(ResourceMaterial* res, Material* mat) : material(mat) {
     if (!res->textureName.empty()) {
-        texture = new Texture(ResourceSystem::Get()->GetResource<ResourceTexture>(res->textureName), 0);
+        ResourceTexture* resTex = ResourceSystem::Get()->GetResource<ResourceTexture>(res->textureName);
+        texture = new Texture(resTex->width, resTex->height, resTex->data, 0);
     }
 
     isLit = res->isLit;

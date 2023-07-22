@@ -2,9 +2,9 @@
 objects:
   light:
     type: Light
-    light_type: 2
+    light_type: 1
     pos: [-2, 4, -3]
-    rotation: [45, 45, 0]
+    rotation: [90, 0, 0]
     cutoffAngle: 35
     distance: 50
   light1:
