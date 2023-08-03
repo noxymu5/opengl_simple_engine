@@ -1,4 +1,5 @@
----
+skyProperties:
+  skyTexture: sb_sky.png
 objects:
   light:
     type: Light
@@ -38,4 +39,3 @@ objects:
     components:
       GameComponentGeometry:
         modelName: "plane.fbx"
----

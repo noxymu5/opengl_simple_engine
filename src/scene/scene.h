@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "scene/scene_sky_config.h"
+
 class GameObject;
 class Camera;
 class Light;
@@ -13,6 +15,9 @@ public:
     Scene() {}
 
     void Update(float dt);
+
+    void SetSkyConfig(SceneSkyConfig* config) { skyConfig = config; }
+    SceneSkyConfig* GetSkyConfig() { return skyConfig; }
 
     GameObject* CreateGameObject(std::string name);
     Camera* CreateCamera(std::string name);
@@ -26,6 +31,8 @@ private:
     std::vector<GameObject*> objects;
     std::vector<Light*> lights;
     Camera* camera = nullptr;
+
+    SceneSkyConfig* skyConfig;
 
     void RegisterGameObject(GameObject* gameObject);
 };

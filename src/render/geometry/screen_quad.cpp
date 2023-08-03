@@ -5,7 +5,7 @@
 #include "render/primitives/vertex_array_object.h"
 #include "render/buffers.h"
 #include "render/shader.h"
-#include "render/texture.h"
+#include "render/texture/texture.h"
 
 const unsigned int verticiesElementsCount = 20;
 const unsigned int indiciesCount = 6;

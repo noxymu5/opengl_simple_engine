@@ -2,7 +2,7 @@
 #define MATERIAL_INSTANCE_H
 
 #include "resource_system/resource/resource_material.h"
-#include "render/texture.h"
+#include "render/texture/texture.h"
 
 class MaterialInstance {
 public:

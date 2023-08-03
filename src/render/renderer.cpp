@@ -14,7 +14,9 @@
 #include "render/buffers.h"
 #include "render/primitives/render_buffer_object.h"
 
-#include "render/texture.h"
+#include "render/texture/texture.h"
+
+#include "render/cube_map/skybox.h"
 
 Renderer::Renderer(GLFWwindow* inWindow) : window(inWindow) {};
 
@@ -26,6 +28,20 @@ void Renderer::Init() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+void Renderer::SetupForScene(Scene* scn) {
+    SceneSkyConfig* config = scn->GetSkyConfig();
+
+    if (skybox != nullptr) {
+        delete(skybox);
+    }
+
+    if (!config->skyTexture.empty()) {
+        skybox = new Skybox(config->skyTexture);
+    } else {
+        skyColor = config->skyColor;
+    }
+}
+
 void Renderer::Terminate() {
     glfwTerminate();
 }
@@ -34,7 +50,7 @@ void Renderer::Render(Scene* scene) {
     frameBuffer->Bind();
     glEnable(GL_DEPTH_TEST);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(skyColor.x, skyColor.y, skyColor.z, skyColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     Camera* cam = scene->GetCamera();
@@ -46,6 +62,8 @@ void Renderer::Render(Scene* scene) {
     std::vector<GameObject*> objects = scene->GetGameObjects();
 
     RenderContext ctx;
+    ctx.view = cam->GetViewMatrix();
+    ctx.proj = projectionMatr;
     ctx.viewProj = viewProj;
     ctx.viewPos = camPos;
     ctx.lightData = PrepareLightData(scene);
@@ -64,11 +82,21 @@ void Renderer::Render(Scene* scene) {
         comp->Draw(ctx);
     }
 
+    if (skybox != nullptr) {
+        glDepthFunc(GL_LEQUAL);
+        glDisable(GL_CULL_FACE);
+
+        skybox->Draw(ctx);
+
+        glDepthFunc(GL_LESS);
+        glEnable(GL_CULL_FACE);
+    }
+
     frameBuffer->Unbind();
 
     glDisable(GL_DEPTH_TEST);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     dumper.DumpToScreen(frameBufferOutput);

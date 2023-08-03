@@ -4,9 +4,14 @@
 #include <map>
 
 #include <yaml-cpp/yaml.h>
+#include <glm/vec4.hpp>
 
 #include "core/logging.h"
 #include "core/asserts.h"
+
+#include "scene/scene_sky_config.h"
+
+#include "dependencies_ext/yaml_cpp/converters.h"
 
 #include "serializers/game_object_serializer.h"
 #include "serializers/camera_serializer.h"
@@ -25,6 +30,10 @@ std::map<std::string, GameObjectSerializer*> serializerStorage = {
 };
 
 const std::string keyGameObjects = "objects";
+const std::string keySkyProperties = "skyProperties";
+
+const std::string keySkyTexture = "skyTexture";
+const std::string keySkyColor = "skyColor";
 
 Scene* SceneFactory::CreateScene(ApplicationArguments arguments) {
     Scene* scn = new Scene();
@@ -32,6 +41,20 @@ Scene* SceneFactory::CreateScene(ApplicationArguments arguments) {
     std::string scenePath = arguments.TryGetArgument(ArgumentType::SCENE_NAME);
     YAML::Node yamlScene = YAML::LoadFile(scenePath.c_str());
     
+    if (yamlScene[keySkyProperties]) {
+        YAML::Node yamlSkyProperties = yamlScene[keySkyProperties];
+
+        if (yamlSkyProperties[keySkyTexture]) {
+            SceneSkyConfig* config = new SceneSkyConfig();
+            config->skyTexture = yamlSkyProperties[keySkyTexture].as<std::string>();
+            scn->SetSkyConfig(config);
+        } else if (yamlSkyProperties[keySkyColor]) {
+            SceneSkyConfig* config = new SceneSkyConfig();
+            config->skyColor = yamlSkyProperties[keySkyColor].as<glm::vec4>();
+            scn->SetSkyConfig(config);
+        }
+    }
+
     YAML::Node gameObjets = yamlScene[keyGameObjects];
     ASSERT(!gameObjets.IsNull(), "Scene file %s does not contain objects section", scenePath.c_str())
     

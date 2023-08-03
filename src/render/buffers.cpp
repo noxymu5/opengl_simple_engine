@@ -3,7 +3,7 @@
 #include <GLEW/glew.h>
 
 #include "core/asserts.h"
-#include "render/texture.h"
+#include "render/texture/texture.h"
 #include "render/primitives/render_buffer_object.h"
 
 //Vertex buffer

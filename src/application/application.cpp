@@ -42,6 +42,8 @@ void Application::Init(ApplicationArguments args) {
 
     currentScene = sceneFactory->CreateScene(args);
 
+    renderer->SetupForScene(currentScene);
+
     glewInit();
 }
 
