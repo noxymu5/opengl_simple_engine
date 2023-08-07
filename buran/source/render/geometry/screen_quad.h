@@ -1,5 +1,4 @@
-#ifndef QUAD_H
-#define QUAD_H
+#pragma once
 
 class VertexBuffer;
 class IndexBuffer;
@@ -20,5 +19,3 @@ private:
     IndexBuffer* indexBuffer;
     
 };
-
-#endif

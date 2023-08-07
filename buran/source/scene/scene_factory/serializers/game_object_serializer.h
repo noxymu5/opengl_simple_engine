@@ -1,5 +1,4 @@
-#ifndef GAME_OBJECT_SERIALIZER_H
-#define GAME_OBJECT_SERIALIZER_H
+#pragma once
 
 #include <string>
 
@@ -16,5 +15,3 @@ protected:
     virtual void ReadContents(GameObject* gameObject, YAML::Node gameObjectContents);
     virtual GameObject* CreateGameObject(Scene* scene, std::string name);
 };
-
-#endif

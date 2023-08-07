@@ -1,5 +1,4 @@
-#ifndef MESH_RESOURCE_H
-#define MESH_RESOURCE_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -24,5 +23,3 @@ struct ResourceMesh : public Resource {
 
     std::vector<ResourceSubMesh> subMeshes;
 };
-
-#endif

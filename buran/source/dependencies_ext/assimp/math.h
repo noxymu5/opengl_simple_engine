@@ -1,3 +1,5 @@
+#pragma once
+
 #include <assimp/matrix4x4.h>
 #include <assimp/vector3.h>
 

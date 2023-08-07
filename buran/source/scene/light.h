@@ -1,5 +1,4 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#pragma once
 
 #include <glm/vec3.hpp>
 
@@ -18,5 +17,3 @@ public:
     float cutoffAngle;
     float distance = 20;
 };
-
-#endif

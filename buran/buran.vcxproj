@@ -989,7 +989,6 @@
     <ClInclude Include="source\application\application_arguments.h" />
     <ClInclude Include="source\core\asserts.h" />
     <ClInclude Include="source\core\glm_declarations.h" />
-    <ClInclude Include="source\core\helpers.h" />
     <ClInclude Include="source\core\logging.h" />
     <ClInclude Include="source\dependencies_ext\assimp\math.h" />
     <ClInclude Include="source\dependencies_ext\yaml_cpp\converters.h" />

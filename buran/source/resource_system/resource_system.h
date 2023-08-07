@@ -1,5 +1,4 @@
-#ifndef RESOURCE_SYSTEM_H
-#define RESOURCE_SYSTEM_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -52,5 +51,3 @@ private:
     std::vector<ResourceLoader*> loaders;
     std::map<std::string, std::map<std::string, Resource*>> resourcesMap;
 };
-
-#endif

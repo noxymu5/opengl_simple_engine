@@ -1,5 +1,4 @@
-#ifndef BUFFERS
-#define BUFFERS
+#pragma once
 
 class Texture;
 class RenderBufferObject;
@@ -66,5 +65,3 @@ private:
 
     gl::GLenum GetGlAttachmentType(FrameBufferAttachmentType attachmentType);
 };
-
-#endif

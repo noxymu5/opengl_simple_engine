@@ -1,5 +1,4 @@
-#ifndef MATERIAL_SIMPLE_H
-#define MATERIAL_SIMPLE_H
+#pragma once
 
 #include "render/materials/material.h"
 
@@ -11,5 +10,3 @@ private:
     virtual std::string GetShaderName() override { return "simple_lit_shader.glsl"; } 
 
 };
-
-#endif

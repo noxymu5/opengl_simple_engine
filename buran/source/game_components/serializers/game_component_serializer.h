@@ -1,5 +1,4 @@
-#ifndef GAME_COMPONENT_SERIALIZER_H
-#define GAME_COMPONENT_SERIALIZER_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 
@@ -37,5 +36,3 @@ public:
         extern void CompName##RegisterSerializer(SceneFactory* factory); \
         CompName##RegisterSerializer(sceneFactory); \
     }
-
-#endif

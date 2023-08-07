@@ -1,5 +1,4 @@
-#ifndef TEXTURE_SKYBOX_H
-#define TEXTURE_SKYBOX_H
+#pragma once
 
 #include <string>
 
@@ -12,5 +11,3 @@ public:
 protected:
     virtual void BindTexture() override;
 };
-
-#endif

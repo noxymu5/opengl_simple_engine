@@ -1,5 +1,4 @@
-#ifndef TRANSFORM
-#define TRANSFORM
+#pragma once
 
 #include "core/glm_declarations.h"
 
@@ -33,5 +32,3 @@ public:
 
     glm::vec3 GetPosition();
 };
-
-#endif

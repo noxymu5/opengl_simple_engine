@@ -1,5 +1,4 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include <vector>
 #include <glm/vec4.hpp>
@@ -47,5 +46,3 @@ private:
     SceneLightsData* PrepareLightData(Scene* scene);
     static void GlErrorCallback(int error, const char* description);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef MODEL_LOADER_H
-#define MODEL_LOADER_H
+#pragma once
 
 #include <string>
 
@@ -17,5 +16,3 @@ public:
 private:
     void TraverseNodeHierarchy(ResourceMesh* resourceMesh, const aiNode* node, const aiScene* scene);
 };
-
-#endif

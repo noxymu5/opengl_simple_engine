@@ -1,5 +1,4 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 struct GLFWwindow;
 
@@ -42,5 +41,3 @@ private:
     void RegisterComponents(SceneFactory* SceneFactory);
     
 };
-
-#endif

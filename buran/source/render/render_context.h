@@ -1,5 +1,4 @@
-#ifndef RENDER_CONTEXT_H
-#define RENDER_CONTEXT_H
+#pragma once
 
 #include <vector>
 
@@ -17,5 +16,3 @@ struct RenderContext {
 
     SceneLightsData* lightData;
 };
-
-#endif

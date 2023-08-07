@@ -1,5 +1,4 @@
-#ifndef INPUT_SYSTEM_H
-#define IMPUT_SYSTEM
+#pragma once
 
 struct GLFWwindow;
 
@@ -20,5 +19,3 @@ public:
 private:
     GLFWwindow* window = nullptr;
 };
-
-#endif

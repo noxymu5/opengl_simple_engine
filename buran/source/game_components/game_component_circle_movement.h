@@ -1,5 +1,4 @@
-#ifndef CIRCLE_MOVEMENT_H
-#define CIRCLE_MOVEMENT_H
+#pragma once
 
 #include "game_components/game_component.h"
 
@@ -9,14 +8,12 @@ public:
 
     float rotationSpeed = 1;
     float radius = 3;
-    float height;
+    float height = 0;
     
     GameComponentCircleMovement(GameObject* owner) : GameComponent(owner) {}
 
     virtual void Update(float dt) override;
 private:
-    float angle;
+    float angle = 0;
 
 };
-
-#endif

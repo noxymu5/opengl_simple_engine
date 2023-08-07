@@ -1,5 +1,4 @@
-#ifndef TEXTURE_LOADER_H
-#define TEXTURE_LOADER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -11,5 +10,3 @@ public:
     TextureLoader(ResourceSystem* sys) : ResourceLoader(sys) {}
     virtual void Load() override;
 };
-
-#endif

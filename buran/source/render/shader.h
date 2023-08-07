@@ -1,5 +1,4 @@
-#ifndef SHADER
-#define SHADER
+#pragma once
 
 #include <vector>
 #include <string>
@@ -44,5 +43,3 @@ private:
     void CompileShaderProgram(std::string* shaderSources);
     unsigned int CreateAndCompileShader(ShaderType shaderType, const char* shaderCode);
 };
-
-#endif

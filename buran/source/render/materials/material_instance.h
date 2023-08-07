@@ -1,5 +1,4 @@
-#ifndef MATERIAL_INSTANCE_H
-#define MATERIAL_INSTANCE_H
+#pragma once
 
 #include "resource_system/resource/resource_material.h"
 #include "render/texture/texture.h"
@@ -15,5 +14,3 @@ private:
     Texture* texture = nullptr;
     bool isLit = true;
 };
-
-#endif

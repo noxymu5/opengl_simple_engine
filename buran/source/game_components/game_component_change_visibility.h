@@ -1,5 +1,4 @@
-#ifndef GAME_COMPONENT_CHANGE_VISIBILITY_H
-#define GAME_COMPONENT_CHANGE_VISIBILITY_H
+#pragma once
 
 #include "game_components/game_component.h"
 #include "game_components/game_component_geometry.h"
@@ -15,5 +14,3 @@ public:
 private:
     GameComponentGeometry* geom;
 };
-
-#endif

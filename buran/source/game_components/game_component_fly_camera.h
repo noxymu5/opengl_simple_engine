@@ -1,5 +1,4 @@
-#ifndef GAME_COMPONENT_FLYCAMERA_H
-#define GAME_COMPONENT_FLYCAMERA_H
+#pragma once
 
 #include "game_components/game_component.h"
 
@@ -36,5 +35,3 @@ private:
     void UpdateDirection();
     void UpdatePosition(float dt);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef VERTEX_ARRAY_OBJECT
-#define VERTEX_ARRAY_OBJECT
+#pragma once
 
 class VertexArrayObject
 {
@@ -12,7 +11,3 @@ public:
     void Bind();
     void UnBind();    
 };
-
-
-
-#endif

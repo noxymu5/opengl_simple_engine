@@ -1645,9 +1645,6 @@
     <ClInclude Include="source\core\glm_declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\core\helpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,5 +1,4 @@
-#ifndef RESOURCE_SHADER_H
-#define RESOURCE_SHADER_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -20,5 +19,3 @@ struct ResourceShader : Resource {
     std::string* shaderSources;
     std::vector<std::string> attributeTypes;
 };
-
-#endif

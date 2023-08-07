@@ -1,5 +1,4 @@
-#ifndef RESOURCE_H
-#define RESOURCE_H
+#pragma once
 
 #include <string>
 
@@ -7,5 +6,3 @@
 
 class Resource {
 };
-
-#endif

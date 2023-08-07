@@ -1,5 +1,4 @@
-#ifndef APPLICATION_ARGUMENTS_H
-#define APPLICATION_ARGUMENTS_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -21,5 +20,3 @@ private:
 
     void ParseArguments(int argc, char* argv[]);
 };
-
-#endif

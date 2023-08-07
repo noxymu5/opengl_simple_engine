@@ -1,5 +1,4 @@
-#ifndef GAME_OBJECT
-#define GAME_OBJECT
+#pragma once
 
 #include <string>
 #include <map>
@@ -65,5 +64,3 @@ private:
 
     std::map<std::string, GameComponent*> components;
 };
-
-#endif

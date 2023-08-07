@@ -1,5 +1,4 @@
-#ifndef RESOURCE_LOADER_H
-#define RESOURCE_LOADER_H
+#pragma once
 
 #include <filesystem>
 
@@ -14,5 +13,3 @@ protected:
 
     void CollectItemsPath(std::vector<std::filesystem::path>& itemsPath, std::string directory);
 };
-
-#endif

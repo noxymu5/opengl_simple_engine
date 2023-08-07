@@ -1,5 +1,4 @@
-#ifndef RENDER_BUFFER_OBJECT_H
-#define RENDER_BUFFER_OBJECT_H
+#pragma once
 
 class RenderBufferObject {
 public:
@@ -13,5 +12,3 @@ public:
 private:
     unsigned int id;
 };
-
-#endif

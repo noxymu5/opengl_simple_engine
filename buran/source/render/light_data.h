@@ -1,5 +1,4 @@
-#ifndef LIGHT_DATA_H
-#define LIGHT_DATA_H
+#pragma once
 
 #include <vector>
 
@@ -37,7 +36,3 @@ struct SceneLightsData {
         
     }
 };
-
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef MATERIAL_LOADER_H
-#define MATERIAL_LOADER_H
+#pragma once
 
 #include "resource_system/loader/resource_loader.h"
 
@@ -8,5 +7,3 @@ public:
     MaterialLoader(ResourceSystem* sys) : ResourceLoader(sys) {}
     virtual void Load() override;
 };
-
-#endif

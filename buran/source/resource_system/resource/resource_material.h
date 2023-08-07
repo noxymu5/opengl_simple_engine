@@ -1,5 +1,4 @@
-#ifndef RESOURCE_MATERIAL_H
-#define RESOURCE_MATERIAL_H
+#pragma once
 
 #include <string>
 
@@ -13,6 +12,3 @@ struct ResourceMaterial : public Resource {
     std::string textureName;
     bool isLit = true;
 };
-
-
-#endif

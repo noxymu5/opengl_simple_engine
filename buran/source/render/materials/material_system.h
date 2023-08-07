@@ -1,5 +1,4 @@
-#ifndef MATERIAL_SYSTEM_H
-#define MATERIAL_SYSTEM_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -19,5 +18,3 @@ private:
     std::vector<Material*> materials;
     std::map<std::string, MaterialInstance*> materialInstances;
 };
-
-#endif

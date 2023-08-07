@@ -1,5 +1,4 @@
-#ifndef SHADER_LOADER_H
-#define SHADER_LOADER_H
+#pragma once
 
 #include <string>
 #include <sstream>
@@ -16,5 +15,3 @@ private:
     std::stringstream ReadFile(std::string path);
     ResourceShader* ParseFile(std::stringstream& shaderSourceStream);
 };
-
-#endif

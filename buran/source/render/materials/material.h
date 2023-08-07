@@ -1,5 +1,4 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
 #include "resource_system/resource_system.h"
 #include "render/shader.h"
@@ -24,5 +23,3 @@ protected:
 private:
     virtual std::string GetShaderName() = 0;
 };
-
-#endif

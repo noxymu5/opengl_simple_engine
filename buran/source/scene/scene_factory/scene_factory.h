@@ -1,5 +1,4 @@
-#ifndef SCENE_FACTORY_H
-#define SCENE_FACTORY_H
+#pragma once
 
 #include <map>
 
@@ -18,5 +17,3 @@ protected:
     std::map<std::string, GameComponentSerializer*> gameComponentSerializers;
     void CreateGameObject(GameObjectCreationData data);
 };
-
-#endif

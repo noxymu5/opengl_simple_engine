@@ -1,5 +1,4 @@
-#ifndef GAME_COMPONENT_GEOMETRY_H
-#define GAME_COMPONENT_GEOMETRY_H
+#pragma once
 
 #include <string>
 
@@ -30,5 +29,3 @@ private:
     Mesh* mesh = nullptr;
     MaterialOverride materialOverride;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef GAME_COMPONENT
-#define GAME_COMPONENT
+#pragma once
 
 #include <string>
 
@@ -17,5 +16,3 @@ public:
 protected:
     GameObject* owner;
 };
-
-#endif

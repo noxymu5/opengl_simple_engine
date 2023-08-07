@@ -1,5 +1,4 @@
-#ifndef TEXTURE_BASE
-#define TEXTURE_BASE
+#pragma once
 
 #include "resource_system/resource/resource_texture.h"
 
@@ -18,5 +17,3 @@ protected:
 
     virtual void BindTexture() = 0;
 };
-
-#endif

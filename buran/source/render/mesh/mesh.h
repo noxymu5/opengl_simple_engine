@@ -1,5 +1,4 @@
-#ifndef MESH_H
-#define MESH_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -40,5 +39,3 @@ public:
 private:
     std::vector<SubMesh*> subMeshes;
 };
-
-#endif
