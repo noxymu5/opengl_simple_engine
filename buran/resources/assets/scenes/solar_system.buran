@@ -6,7 +6,7 @@ objects:
     type: Camera
     pos: [0, 3, 10]
     components:
-      GameComponentFlyCamera:
+      FlyCamera:
         movementSpeedScale: 10
   sunLight:
     type: Light
@@ -15,54 +15,54 @@ objects:
     type: GameObject
     scale: 10
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: sun.mat
   mercury:
     type: GameObject
     scale: 0.18
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: mercury.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 0.07
         radius: 13.37
   venus:
     type: GameObject
     scale: 0.44
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: venus.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 0.15
         radius: 20.37
   earth:
     type: GameObject
     scale: 0.46
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: earth.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 0.25
         radius: 35
   mars:
     type: GameObject
     scale: 0.24
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: mars.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 0.45
         radius: 40
   jupiter:
     type: GameObject
     scale: 5.152
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: jupiter.mat
       GameComponentCircleMovement:
@@ -72,29 +72,29 @@ objects:
     type: GameObject
     scale: 4.32
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: saturn.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 1
         radius: 80
   uranus:
     type: GameObject
     scale: 1.83
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: uranus.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 2
         radius: 100
   neptune:
     type: GameObject
     scale: 1.8
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: sphere.fbx
         mainMaterialOverride: neptune.mat
-      GameComponentCircleMovement:
+      CircleMovement:
         rotationSpeed: 3.5
         radius: 120

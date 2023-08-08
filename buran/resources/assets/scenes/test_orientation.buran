@@ -18,24 +18,24 @@ objects:
     type: Camera
     pos: [0, 1, 0]
     components:
-      GameComponentFlyCamera:
+      FlyCamera:
         movementSpeedScale: 10
   monkey:
     type: GameObject
     pos: [0, 0, 3]
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: "monkey.fbx"
         mainMaterialOverride: "earth.mat"
   snowman:
     type: GameObject
     pos: [4, 0, 0]
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: "snowman.fbx"
   floor:
     type: GameObject
     pos: [0, 0, 0]
     components:
-      GameComponentGeometry:
+      Geometry:
         modelName: "plane.fbx"

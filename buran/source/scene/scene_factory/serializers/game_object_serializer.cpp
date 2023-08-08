@@ -18,15 +18,17 @@ void GameObjectSerializer::Deserialize(SceneFactory* sceneFactory, Scene* scene,
 
     if (gameObjectContents[keyComponents]) {
         YAML::Node components = gameObjectContents[keyComponents];
-    
+            
         LOG("Start creating components")
         for(YAML::const_iterator it = components.begin(); it != components.end(); ++it) {
-            auto first = it->first;
+            std::string componentName = "GameComponent" + it->first.as<std::string>();
 
-            GameComponentSerializer* serializer = sceneFactory->GetGameComponentSerializer(first.as<std::string>());
+            GameComponentSerializer* serializer = sceneFactory->GetGameComponentSerializer(componentName);
             if (serializer == nullptr) {
                 continue;
             }
+
+            LOG("creating component %s", componentName.c_str())
 
             serializer->Deserialize(gameObject, it->second);
         }
