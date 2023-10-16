@@ -26,6 +26,7 @@ void Renderer::Init() {
     gl::glCullFace(gl::GL_BACK);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 }
 
 void Renderer::SetupForScene(Scene* scn) {

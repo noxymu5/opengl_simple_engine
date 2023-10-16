@@ -19,10 +19,7 @@ public:
 private:
     const float maxPitch = 90;
     const float minPitch = -90;
-    const float mouseSensitivity = 0.1f;
-
-    double lastMouseX = 0;
-    double lastMouseY = 0;
+    const float mouseSensitivity = 1.0f;
 
     double yaw = 0;
     double pitch = 0;

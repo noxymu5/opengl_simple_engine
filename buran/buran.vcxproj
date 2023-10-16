@@ -96,11 +96,12 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,13 +114,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,11 +132,12 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,17 +150,23 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>yaml-cpp.lib;assimp.lib;zlib.lib;opengl32.lib;glfw3.lib;glbinding.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\includes\glm\detail\glm.cpp" />
+    <ClCompile Include="source\input\devices\input_device_manager_mouse.cpp" />
+    <ClCompile Include="source\input\devices\input_device_manager_keyboard.cpp" />
+    <ClCompile Include="source\input\devices\input_device_manager_xinput.cpp" />
+    <ClCompile Include="source\input\devices\input_device_manager.cpp" />
+    <ClCompile Include="source\input\keymap.cpp" />
     <ClCompile Include="source\application\application.cpp" />
     <ClCompile Include="source\application\application_arguments.cpp" />
     <ClCompile Include="source\dependencies_ext\assimp\math.cpp" />
@@ -989,6 +998,13 @@
     <ClInclude Include="dependencies\includes\yaml-cpp\stlemitter.h" />
     <ClInclude Include="dependencies\includes\yaml-cpp\traits.h" />
     <ClInclude Include="dependencies\includes\yaml-cpp\yaml.h" />
+    <ClInclude Include="source\input\devices\input_device_manager_mouse.h" />
+    <ClInclude Include="source\input\devices\input_device_manager_keyboard.h" />
+    <ClInclude Include="source\input\axis_types.h" />
+    <ClInclude Include="source\input\devices\input_device_manager_xinput.h" />
+    <ClInclude Include="source\input\devices\input_device_manager.h" />
+    <ClInclude Include="source\input\device_types.h" />
+    <ClInclude Include="source\input\keymap.h" />
     <ClInclude Include="source\application\application.h" />
     <ClInclude Include="source\application\application_arguments.h" />
     <ClInclude Include="source\core\asserts.h" />
@@ -1003,6 +1019,7 @@
     <ClInclude Include="source\game_components\game_component_geometry.h" />
     <ClInclude Include="source\game_components\serializers\game_component_serializer.h" />
     <ClInclude Include="source\input\input_system.h" />
+    <ClInclude Include="source\input\key_codes.h" />
     <ClInclude Include="source\math\transform.h" />
     <ClInclude Include="source\render\buffers.h" />
     <ClInclude Include="source\render\cube_map\skybox.h" />
@@ -1202,6 +1219,7 @@
     <None Include="dependencies\resources\shaders\simple_lit_shader.glsl" />
     <None Include="dependencies\resources\shaders\skybox.glsl" />
     <None Include="dependencies\resources\shaders\texture_buffer_to_screen.glsl" />
+    <None Include="resources\assets\misc\keymap_base.kmp" />
     <None Include="resources\shaders\simple_lit_shader.glsl" />
     <None Include="resources\shaders\skybox.glsl" />
     <None Include="resources\shaders\texture_buffer_to_screen.glsl" />

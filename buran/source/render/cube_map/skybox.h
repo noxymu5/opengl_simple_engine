@@ -9,7 +9,7 @@ class VertexBuffer;
 class IndexBuffer;
 class VertexArrayObject;
 class Shader;
-class RenderContext;
+struct RenderContext;
 
 class Skybox {
 public:

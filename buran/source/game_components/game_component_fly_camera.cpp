@@ -1,10 +1,10 @@
 #include "game_component_fly_camera.h"
 
-#include <GLFW/glfw3.h>
-
 #include "core/glm_declarations.h"
 #include <glm/gtx/quaternion.hpp>
+
 #include "input/input_system.h"
+#include "input/key_codes.h"
 #include "core/logging.h"
 
 #include "game_components/serializers/game_component_serializer.h"
@@ -21,7 +21,7 @@ void GameComponentFlyCamera::Update(float dt) {
 }
 
 void GameComponentFlyCamera::UpdateSpeed() {
-    if (InputSystem::IsKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+    if (InputSystem::IsKeyPressed(KeyCode::KB_LEFT_SHIFT)) {
         currentSpeed = movementSpeed * movementSpeedScale;
     } else {
         currentSpeed = movementSpeed;
@@ -29,17 +29,8 @@ void GameComponentFlyCamera::UpdateSpeed() {
 }
 
 void GameComponentFlyCamera::UpdateDirection() {
-    double currMouseX, currMouseY;
-    InputSystem::GetCursorPos(&currMouseX, &currMouseY);
-
-    double mouseDiffX = lastMouseX - currMouseX;
-    double mouseDiffY = currMouseY - lastMouseY;
-    
-    lastMouseX = currMouseX;
-    lastMouseY = currMouseY;
-
-    yaw += mouseDiffX * mouseSensitivity;
-    pitch += mouseDiffY * mouseSensitivity;
+    yaw -= InputSystem::GetAxisRaw(AxisType::MS_HORIZONTAL) * mouseSensitivity;
+    pitch += InputSystem::GetAxisRaw(AxisType::MS_VERTICAL) * mouseSensitivity;
     if (pitch > maxPitch) {
         pitch  = maxPitch;
     }
@@ -57,27 +48,14 @@ void GameComponentFlyCamera::UpdatePosition(float dt) {
     glm::vec3 right = owner->GetTransform().Right();
     glm::vec3 up = owner->GetTransform().Up();
 
-    if (InputSystem::IsKeyDown(GLFW_KEY_W)) {
-        movementVector += forward * dt * currentSpeed;
-    }
-    
-    if (InputSystem::IsKeyDown(GLFW_KEY_S)) {
-        movementVector -= forward * dt * currentSpeed;
-    }
-    
-    if (InputSystem::IsKeyDown(GLFW_KEY_A)) {
-        movementVector += right * dt * currentSpeed;
-    }
-    
-    if (InputSystem::IsKeyDown(GLFW_KEY_D)) {
-        movementVector -= right * dt * currentSpeed;
-    }
-    
-    if (InputSystem::IsKeyDown(GLFW_KEY_E)) {
+    movementVector += forward * dt * InputSystem::GetAxis(AxisType::KB_SYM_VERTICAL) * currentSpeed;
+    movementVector -= right * dt * InputSystem::GetAxis(AxisType::KB_SYM_HORIZONTAL) * currentSpeed;
+
+    if (InputSystem::IsKeyPressed(KeyCode::KB_E)) {
         movementVector += up * dt * currentSpeed;
     }
 
-    if (InputSystem::IsKeyDown(GLFW_KEY_Q)) {
+    if (InputSystem::IsKeyPressed(KeyCode::KB_Q)) {
         movementVector -= up * dt * currentSpeed;
     }
 

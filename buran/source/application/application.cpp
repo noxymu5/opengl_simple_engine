@@ -62,7 +62,7 @@ void Application::Execute() {
         currentScene->Update(static_cast<float>(deltaTime));
         renderer->Render(currentScene);
 
-        glfwPollEvents();
+        inputSystem->ProcessInput();
     }
 }
 

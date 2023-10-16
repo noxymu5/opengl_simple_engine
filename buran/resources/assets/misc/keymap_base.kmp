@@ -1,0 +1,5 @@
+bindings:
+	forward: [KB_W]
+	back: [KB_S]
+	left: [KB_A]
+	right: [KB_D]
